@@ -5,10 +5,10 @@ import os,sys
 
 '''
 Please add the following line in ~/.bashrc
-export SCHDLR_ROOT_DIR = <YOUR PROJECT ROOT>
+export STAT_SCHDLR_ROOT_DIR = <YOUR PROJECT ROOT>
 '''
 
-PROJECT_ROOT = os.environ['SCHDLR_ROOT_DIR']
+PROJECT_ROOT = os.environ['STAT_SCHDLR_ROOT_DIR']
 sys.path.append(PROJECT_ROOT)
 
 LIB_PATH=PROJECT_ROOT+'/'+'lib/'
@@ -18,8 +18,4 @@ PICKLE_PATH=PROJECT_ROOT+'/'+'pickles/'
 DATA_PATH=PROJECT_ROOT+'/'+'data/'
 
 
-BOUNDED_TREE_STEP=5
-
-PICKLE_FLAG=True
-
-VIZ_PER_COVERAGE=100 # Percentage of reachable sets covered
+PICKLE_FLAG=False

@@ -1,92 +1,42 @@
 import os,sys
-PROJECT_ROOT = os.environ['SCHDLR_ROOT_DIR']
+PROJECT_ROOT = os.environ['STAT_SCHDLR_ROOT_DIR']
 sys.path.append(PROJECT_ROOT)
 
 from Parameters import *
-from lib.SetOperations import *
-from lib.StarOperations import *
 import math
 import time
 import copy
+import numpy as np
 
-class ScheStrat:
+class SchedStrat:
     '''
     Implements Bounded Tree Based method
     '''
-    def __init__(self,A,B,C,D,K):
-        self.A=A # Dynamics
-        self.B=B # Dynamics
-        self.C=C # Dynamics
-        self.D=D # Dynamics
-        self.K=K # Control
+    def __init__(self,systemObj,methodName="HoldSkip-Next"):
+        self.A=systemObj.A # Dynamics
+        self.B=systemObj.B # Dynamics
+        self.C=systemObj.C # Dynamics
+        self.D=systemObj.D # Dynamics
+        self.K=systemObj.K # Control
+        self.methodName=methodName
 
-   
-
-    def getReachSetSeqn(self,initSet,seqn):
+    def getReachSetSeqn(self,initPoint,seqn):
         '''
         Given a sequence, it returns the reachable set
         '''
-        if self.methodName=="HoldSkip":
-            return self.reachSetHoldSkip(initSet,seqn)
+        if self.methodName=="HoldSkip-Next":
+            return self.reachSetHoldSkipNext(initPoint,seqn)
         elif self.methodName=="ZeroKill":
-            return self.reachSetZeroKill(initSet,seqn)
+            return self.reachSetZeroKill(initPoint,seqn)
         elif self.methodName=="HoldKill":
-            return self.reachSetHoldKill(initSet,seqn)
-
-    def reachSetHoldSkip(self,initSet,seqn):
-        rs=copy.copy(initSet)
-        p=self.A.shape[0]
-        r=self.B.shape[1]
-        n=0
-
-        # Miss matrix
-        A_miss=np.vstack(
-        (np.hstack((self.A,np.zeros((p,n*p)),self.B)),
-        np.hstack((np.identity(n*p),np.zeros((n*p,p+r)))),
-        np.hstack((np.zeros((r,(n+1)*p)),np.identity(r))))
-        )
-
-        # Hit matrix
-        K_x = -self.K[:,0:p]
-        if self.K.shape[1] == p + r:
-            K_u = -self.K[:,p:p+r+1]
+            return self.reachSetHoldKill(initPoint,seqn)
+        elif self.methodName=="ZeroSkip-Next":
+            return self.reachSetZeroSkipNext(initPoint,seqn)
         else:
-            K_u = np.zeros((p, r))
+            print(">> STATUS: FATAL ERROR - Unimplemented!")
+            exit(0)
 
-        A_hit=np.zeros(((n+1)*p + r, (n+1)*p + r, n+1))
-        for i in range(n+1):
-            A_hit[:,:,i]=np.vstack(
-            (np.hstack((self.A,np.zeros((p,n*p)),self.B)),
-            np.hstack((np.identity(n*p),np.zeros((n*p,p+r)))),
-            np.hstack((np.zeros((r,i*p)),K_x,np.zeros((r,(n-i)*p)),K_u)))
-            )
-
-        # Get a sequence of arrays based on `seqn`
-        #x_0=np.vstack((self.x0,np.zeros((p*n + r, 1))))
-        rsList=[]
-        t_max = len(seqn)
-        t_since_last_hit = 0
-        #x = np.zeros((p*(n+1) + r, t_max + 1));
-        #x[:,0] = x_0[:,0];
-        rsList.append(copy.copy(initSet))
-        for t in range(1,t_max+1):
-            if seqn[t-1]==1:
-                # Hit
-                A = A_hit[:,:,t_since_last_hit]
-                t_since_last_hit = 0
-            else:
-                # Miss
-                A = A_miss;
-                t_since_last_hit = t_since_last_hit + 1
-            rs=StarOp.prodMatStar(A,rs)
-            rsList.append(copy.copy(rs))
-
-        #np.set_printoptions(precision=3)
-        #print(x)
-        #exit(0)
-        return rsList
-
-    def reachSetHoldSkipAny(self,initSet,seqn):
+    def reachSetHoldSkipNext(self,initSet,seqn):
         p, r = self.B.shape
 
         # Split apart the two pieces of K, if necessary
@@ -119,7 +69,7 @@ class ScheStrat:
 
         t_max=len(seqn)
 
-        rs=StarOp.prodMatStar(A_HH,initSet)
+        rs=np.matmul(A_HH,initSet)
         rsList.append(copy.copy(rs))
 
         for t in range(1,t_max):
@@ -135,7 +85,7 @@ class ScheStrat:
             elif seqn[t-1]==0 and seqn[t]==0:
                 # Miss-Hit
                 A = A_MM
-            rs=StarOp.prodMatStar(A,rs)
+            rs=np.matmul(A,rs)
             rsList.append(copy.copy(rs))
 
         return rsList
@@ -173,7 +123,7 @@ class ScheStrat:
 
         t_max=len(seqn)
 
-        rs=StarOp.prodMatStar(A_HH,initSet)
+        rs=np.matmul(A_HH,initSet)
         rsList.append(copy.copy(rs))
 
         for t in range(1,t_max):
@@ -189,7 +139,7 @@ class ScheStrat:
             elif seqn[t-1]==0 and seqn[t]==0:
                 # Miss-Hit
                 A = A_MM
-            rs=StarOp.prodMatStar(A,rs)
+            rs=np.matmul(A,rs)
             rsList.append(copy.copy(rs))
 
         return rsList
@@ -227,7 +177,7 @@ class ScheStrat:
             else:
                 # Miss
                 A = A_miss;
-            rs=StarOp.prodMatStar(A,rs)
+            rs=np.matmul(A,rs)
             rsList.append(copy.copy(rs))
 
         #np.set_printoptions(precision=3)
@@ -265,12 +215,10 @@ class ScheStrat:
             else:
                 # Miss
                 A = A_miss;
-            rs=StarOp.prodMatStar(A,rs)
+            rs=np.matmul(A,rs)
             rsList.append(copy.copy(rs))
 
         #np.set_printoptions(precision=3)
         #print(x)
         #exit(0)
         return rsList
-
-    

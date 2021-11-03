@@ -3,7 +3,7 @@ Provides various benchmark examples
 '''
 
 import os,sys
-PROJECT_ROOT = os.environ['SCHDLR_ROOT_DIR']
+PROJECT_ROOT = os.environ['STAT_SCHDLR_ROOT_DIR']
 sys.path.append(PROJECT_ROOT)
 
 from Parameters import *
