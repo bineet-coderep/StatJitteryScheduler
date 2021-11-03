@@ -12,13 +12,14 @@ import time
 
 class StatVerJFB:
 
-    def __init__(self,systemObj,dim,initPoint,H=150,schedPol="HoldSkip-Next",distro="Uniform",B=1000,c=0.99):
+    def __init__(self,systemObj,dim,initPoint,H=150,schedPol="HoldSkip-Next",distro="K-Miss",K_miss=-1,B=1000,c=0.99):
         self.systemObj=systemObj
         self.H=H
         self.dim=dim
         self.initPoint=initPoint
         self.schedPol=schedPol
         self.distro=distro
+        self.K_miss=K_miss
         self.B=B
         self.c=c
         self.JFB_params=JFB(B,c)
@@ -30,7 +31,7 @@ class StatVerJFB:
         print(">> STATUS: Statistically Verifying . . .")
         time_taken=time.time()
         # Generate random samples according to JFB
-        randSampObj=RandSampling(self.systemObj,self.H,self.schedPol,self.distro)
+        randSampObj=RandSampling(self.systemObj,self.H,self.schedPol,self.distro,self.K_miss)
         (s,randSamples)=randSampObj.getSamples(self.initPoint,self.JFB_params.K)
         nomTraj=randSampObj.getAllHitTraj(self.initPoint)
         # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

@@ -10,17 +10,18 @@ from lib.JFBF import *
 import time
 
 class DevCompStat:
-    def __init__(self,systemObj,dim,initPoint,H=150,schedPol="HoldSkip-Next",distro="Uniform",heuName="RandSamp",B=1000,c=0.99):
+    def __init__(self,systemObj,dim,initPoint,H=150,schedPol="HoldSkip-Next",distro="K-Miss",K_miss=-1,heuName="RandSampKMiss",B=1000,c=0.99):
         self.systemObj=systemObj
         self.H=H
         self.dim=dim
         self.initPoint=initPoint
         self.schedPol=schedPol
         self.distro=distro
+        self.K_miss=K_miss
         self.heuName=heuName
         self.JFB_params=JFB(B,c)
 
-    def mainAlgo(self,P=1.1):
+    def mainAlgo(self,P=1.05):
         '''
         Implements the main Statistical Algorithm
         '''
@@ -28,8 +29,8 @@ class DevCompStat:
 
         print("\t>> SUB-STATUS: Computing Initial d")
         time_taken=time.time()
-        d_ub=Heuristics(self.systemObj,self.dim,self.initPoint,self.H,self.schedPol,self.distro,self.heuName).getD()
-        statVerifier=StatVerJFB(self.systemObj,self.dim,self.initPoint,self.H,self.schedPol,self.distro,self.JFB_params.B,self.JFB_params.c)
+        d_ub=Heuristics(self.systemObj,self.dim,self.initPoint,self.H,self.schedPol,self.distro,self.K_miss,self.heuName).getD()
+        statVerifier=StatVerJFB(self.systemObj,self.dim,self.initPoint,self.H,self.schedPol,self.distro,self.K_miss,self.JFB_params.B,self.JFB_params.c)
         print("\t* d: ",d_ub)
         print("\t* Time Taken: ",time.time()-time_taken)
         print("\t>> SUB-STATUS: Initial d Computed!!")

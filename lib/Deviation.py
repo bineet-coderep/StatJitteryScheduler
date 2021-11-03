@@ -42,10 +42,16 @@ class Deviation:
 
         d=-np.inf
         tStep=-7
+        ctMax=-7
+        ct=0
         for traj in trajs:
             (d_i,t_i)=Deviation.computeDev(nomTraj,traj,dim)
             if d_i>d:
+                #print(traj,ct,"\n\n")
                 d=d_i
                 tStep=t_i
+                ctMax=ct
+            ct=ct+1
+        #print(ct)
 
         return (d,tStep)

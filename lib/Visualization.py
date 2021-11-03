@@ -19,16 +19,16 @@ class Viz:
         allHitY=[allHitTraj[t][th2][0] for t in range(H)]
         #plt.plot(allHitX,allHitY,label="All Hit", color='g',markersize=2,linewidth=3)
 
-        allMissX=[allMissTraj[t][th1][0] for t in range(H)]
-        allMissY=[allMissTraj[t][th2][0] for t in range(H)]
+        #allMissX=[allMissTraj[t][th1][0] for t in range(H)]
+        #allMissY=[allMissTraj[t][th2][0] for t in range(H)]
         #plt.plot(allHitX,allHitY,label="All Miss", color='r',markersize=2,linewidth=3)
 
         for t in range(H):
             0;
-            ax.add_patch(plt.Circle((allHitTraj[t][th1][0], allHitTraj[t][th2][0]), d_ub, color='blue',alpha=1))
+            ax.add_patch(plt.Circle((allHitTraj[t][th1][0], allHitTraj[t][th2][0]), d_ub, color='cyan',alpha=1))
 
         plt.plot(allHitX,allHitY,label="All Hit", color='g',markersize=2,linewidth=3)
-        plt.plot(allMissX,allMissY,label="All Miss", color='r',markersize=2,linewidth=3)
+        #plt.plot(allMissX,allMissY,label="All Miss", color='r',markersize=2,linewidth=3)
 
         plt.legend()
         plt.show()
