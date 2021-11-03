@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 
 class Viz:
 
-    def vizTrajs(allHitTraj,allMissTraj,d_ub,th1=0,th2=1):
+    def vizTrajs(allHitTraj,randTrajs,d_ub,th1=0,th2=1):
         plt.figure()
         fig, ax = plt.subplots()
 
@@ -27,8 +27,13 @@ class Viz:
             0;
             ax.add_patch(plt.Circle((allHitTraj[t][th1][0], allHitTraj[t][th2][0]), d_ub, color='cyan',alpha=1))
 
-        plt.plot(allHitX,allHitY,label="All Hit", color='g',markersize=2,linewidth=3)
         #plt.plot(allMissX,allMissY,label="All Miss", color='r',markersize=2,linewidth=3)
+        for traj in randTrajs:
+            X=[traj[t][th1][0] for t in range(H)]
+            Y=[traj[t][th2][0] for t in range(H)]
+            plt.plot(X,Y, color='r',markersize=1,linewidth=1,linestyle='--')
+
+        plt.plot(allHitX,allHitY,label="All Hit", color='g',markersize=2,linewidth=3)
 
         plt.legend()
         plt.show()

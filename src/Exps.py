@@ -27,8 +27,9 @@ class Exp:
 
         randSampObj=randSampObj=RandSampling(systemObj,H,schedPol,distro,K_miss)
         nomTraj=randSampObj.getAllHitTraj(initPointArrayRep)
+        (s,randSamps)=randSampObj.getSamples(initPointArrayRep,10)
         allMissTraj=randSampObj.getAllMissTraj(initPointArrayRep)
-        Viz.vizTrajs(nomTraj,allMissTraj,d_ub)
+        Viz.vizTrajs(nomTraj,randSamps,d_ub)
 
     def test1(initPoint=[10,10],H=150,schedPol="ZeroSkip-Next",distro="K-Miss",K_miss=3,heuName="RandSampKMiss",B=1000,c=0.99):
         dynA=Benchmarks.Steering.A
@@ -47,7 +48,8 @@ class Exp:
         randSampObj=randSampObj=RandSampling(systemObj,H,schedPol,distro,K_miss)
         nomTraj=randSampObj.getAllHitTraj(initPointArrayRep)
         allMissTraj=randSampObj.getAllMissTraj(initPointArrayRep)
-        Viz.vizTrajs(nomTraj,allMissTraj,d_ub)
+        (s,randSamps)=randSampObj.getSamples(initPointArrayRep,10)
+        Viz.vizTrajs(nomTraj,randSamps,d_ub)
 
     def test2(initPoint=[10,10],H=150,schedPol="HoldSkip-Next",distro="K-Miss",K_miss=3,heuName="RandSampKMiss",B=1000,c=0.99):
         dynA=Benchmarks.ECRTS21.A
@@ -66,7 +68,8 @@ class Exp:
         randSampObj=randSampObj=RandSampling(systemObj,H,schedPol,distro,K_miss)
         nomTraj=randSampObj.getAllHitTraj(initPointArrayRep)
         allMissTraj=randSampObj.getAllMissTraj(initPointArrayRep)
-        Viz.vizTrajs(nomTraj,[],d_ub)
+        (s,randSamps)=randSampObj.getSamples(initPointArrayRep,10)
+        Viz.vizTrajs(nomTraj,randSamps,d_ub)
 
 
 
