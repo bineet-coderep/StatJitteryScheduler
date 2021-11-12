@@ -23,6 +23,7 @@ class StatVerJFB:
         self.B=B
         self.c=c
         self.JFB_params=JFB(B,c)
+        self.randSampObj=RandSampling(self.systemObj,self.H,self.schedPol,self.distro,self.K_miss)
 
     def isSafe(self,d_ub):
         '''
@@ -31,9 +32,8 @@ class StatVerJFB:
         print(">> STATUS: Statistically Verifying . . .")
         time_taken=time.time()
         # Generate random samples according to JFB
-        randSampObj=RandSampling(self.systemObj,self.H,self.schedPol,self.distro,self.K_miss)
-        (s,randSamples)=randSampObj.getSamples(self.initPoint,self.JFB_params.K)
-        nomTraj=randSampObj.getAllHitTraj(self.initPoint)
+        (s,randSamples)=self.randSampObj.getSamples(self.initPoint,self.JFB_params.K)
+        nomTraj=self.randSampObj.getAllHitTraj(self.initPoint)
         # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         # Compute deviation from the samples
         (dSamp,t)=Deviation.computeDevTrajectories(nomTraj,randSamples)

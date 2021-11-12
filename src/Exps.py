@@ -51,7 +51,7 @@ class Exp:
         (s,randSamps)=randSampObj.getSamples(initPointArrayRep,10)
         Viz.vizTrajs(nomTraj,randSamps,d_ub)
 
-    def test2(initPoint=[10,10],H=150,schedPol="HoldSkip-Next",distro="K-Miss",K_miss=3,heuName="RandSampKMiss",B=1000,c=0.99):
+    def test2(initPoint=[10,10],H=150,schedPol="HoldSkip-Next",distro="K-Miss",K_miss=10,heuName="RandSampKMiss",B=1000,c=0.99):
         dynA=Benchmarks.ECRTS21.A
         dynB=Benchmarks.ECRTS21.B
         dynC=Benchmarks.ECRTS21.C
