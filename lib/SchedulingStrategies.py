@@ -12,7 +12,7 @@ class SchedStrat:
     '''
     Implements Bounded Tree Based method
     '''
-    def __init__(self,systemObj,methodName="HoldSkip-Next"):
+    def __init__(self,systemObj,methodName):
         self.A=systemObj.A # Dynamics
         self.B=systemObj.B # Dynamics
         self.C=systemObj.C # Dynamics
@@ -91,6 +91,7 @@ class SchedStrat:
         return rsList
 
     def reachSetZeroSkipNext(self,initSet,seqn):
+        
         p, r = self.B.shape
 
         # Split apart the two pieces of K, if necessary

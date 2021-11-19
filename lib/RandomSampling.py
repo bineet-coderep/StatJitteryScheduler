@@ -6,6 +6,8 @@ from Parameters import *
 import random
 from lib.SchedulingStrategies import *
 import numpy.random as nrd
+import time
+
 
 class RandSampling:
 
@@ -21,6 +23,7 @@ class RandSampling:
 
     def getARandSample(self,initPoint):
         # Generate a sequence
+        random.seed(time.time())
         if self.distro=="Uniform":
             seqn=[random.randint(0,1) for i in range(self.H)]
         elif self.distro=="K-Miss":
@@ -31,7 +34,7 @@ class RandSampling:
         # %%%%%%%%%%%%%%%%%%%%%%%%%%
 
         # Generate trajectory as per seqn
-        schdStrat=SchedStrat(self.systemObj)
+        schdStrat=SchedStrat(self.systemObj,self.schedPol)
         traj=schdStrat.getReachSetSeqn(initPoint,seqn)
         return (seqn,traj)
 
@@ -129,11 +132,11 @@ class RandSampling:
         return (sequences,trajectories)
 
     def getAllHitTraj(self,initPoint):
-        schdStrat=SchedStrat(self.systemObj)
+        schdStrat=SchedStrat(self.systemObj,self.schedPol)
         nomTraj=schdStrat.getReachSetSeqn(initPoint,[1]*self.H)
         return nomTraj
 
     def getAllMissTraj(self,initPoint):
-        schdStrat=SchedStrat(self.systemObj)
+        schdStrat=SchedStrat(self.systemObj,self.schedPol)
         nomTraj=schdStrat.getReachSetSeqn(initPoint,[0]*self.H)
         return nomTraj

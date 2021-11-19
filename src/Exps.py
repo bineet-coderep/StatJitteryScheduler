@@ -11,7 +11,7 @@ from lib.Visualization import *
 
 class Exp:
 
-    def test0(initPoint=[10,10],H=150,schedPol="HoldSkip-Next",distro="K-Miss",K_miss=3,heuName="RandSampKMiss",B=1000,c=0.99):
+    def test0(initPoint=[10,10],H=150,schedPol="HoldSkip-Next",distro="K-Miss",K_miss=3,heuName="RandSampKMiss",B=415000,c=0.99):
         dynA=Benchmarks.DC.A
         dynB=Benchmarks.DC.B
         dynC=Benchmarks.DC.C
@@ -74,4 +74,4 @@ class Exp:
 
 
 if True:
-    Exp.test2()
+    Exp.test0()

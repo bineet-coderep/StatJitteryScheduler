@@ -28,7 +28,7 @@ class Heuristics:
             print(">> STATUS: FATAL ERROR - Unimplemented!")
             exit(0)
 
-    def getDRandSamp(self,K=10,P=1.1):
+    def getDRandSamp(self,K=R,P=EPSILON):
         '''
         - Generate K random samples
         - Generate all miss trajectories
@@ -48,9 +48,9 @@ class Heuristics:
         (d,t)=Deviation.computeDevTrajectories(nomTraj,randTrajs+[allMissTraj],self.dim)
 
 
-        return d*P
+        return d+P
 
-    def getDRandSampKMiss(self,K=50,P=1.05):
+    def getDRandSampKMiss(self,K=R,P=EPSILON):
         '''
         - Generate K random samples
         - Generate all miss trajectories
@@ -76,4 +76,4 @@ class Heuristics:
         exit(0)'''
 
 
-        return d*P
+        return d+P

@@ -21,7 +21,7 @@ class DevCompStat:
         self.heuName=heuName
         self.JFB_params=JFB(B,c)
 
-    def mainAlgo(self,P=1.05):
+    def mainAlgo(self,P=EPSILON):
         '''
         Implements the main Statistical Algorithm
         '''
@@ -43,16 +43,18 @@ class DevCompStat:
             print("\t>> SUB-STATUS: Iteration Number: ",it)
             rslt=statVerifier.isSafe(d_ub)
             if rslt!=True:
-                d_ub=rslt*P
+                d_ub=rslt+P
             else:
                 break;
             it=it+1
+
+        tot_time=time.time()-time_taken
         print("\t>> SUB-STATUS: Refinement End . . .")
 
-        print("\t* Time Taken: ",time.time()-time_taken)
+        print("\t* Time Taken: ",tot_time)
         print("\t* Refinements Made: ",it)
         print("\t* Upper Bound d: ",d_ub)
 
         print(">> Main Algo Executed!!")
 
-        return d_ub
+        return d_ub,it,tot_time
