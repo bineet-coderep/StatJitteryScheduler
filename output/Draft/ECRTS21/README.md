@@ -1,6 +1,6 @@
 # ECRTS21
 
-NOTE: Default K_miss=2
+NOTE: Default K_miss=1
 
 ## Varying Scheduling Policy
 
