@@ -11,26 +11,26 @@ from lib.System import *
 from lib.RandomSampling import *
 from lib.Visualization import *
 
-class RC:
+class ECRTS21:
 
-    def getD(initPoint=[10,10],H=150,schedPol="HoldSkip-Next",distro="K-Miss",K_miss=3,heuName="RandSampKMiss",B=415000,c=0.99):
-        dynA=Benchmarks.DC.A
-        dynB=Benchmarks.DC.B
-        dynC=Benchmarks.DC.C
-        dynD=Benchmarks.DC.D
-        K=Benchmarks.DC.K
+    def getD(initPoint=[10,10],H=150,schedPol="HoldSkip-Next",distro="K-Miss",K_miss=1,heuName="RandSampKMiss",B=415000,c=0.99):
+        dynA=Benchmarks.ECRTS21.A
+        dynB=Benchmarks.ECRTS21.B
+        dynC=Benchmarks.ECRTS21.C
+        dynD=Benchmarks.ECRTS21.D
+        K=Benchmarks.ECRTS21.K
         n=dynA.shape[0]
         systemObj=System(dynA,dynB,dynC,dynD,K)
 
 
         if schedPol=="HoldKill":
-            initPointArrayRep=np.array(initPoint+[0]).reshape(3,-1)
+            initPointArrayRep=np.array(initPoint+[0,0]).reshape(4,-1)
         elif schedPol=="ZeroKill":
-            initPointArrayRep=np.array(initPoint+[0]).reshape(3,-1)
+            initPointArrayRep=np.array(initPoint+[0,0]).reshape(4,-1)
         elif schedPol=="HoldSkip-Next":
-            initPointArrayRep=np.array(initPoint+[0,0,0]).reshape(5,-1)
+            initPointArrayRep=np.array(initPoint+[0,0,0,0]).reshape(6,-1)
         elif schedPol=="ZeroSkip-Next":
-            initPointArrayRep=np.array(initPoint+[0,0,0]).reshape(5,-1)
+            initPointArrayRep=np.array(initPoint+[0,0,0,0]).reshape(6,-1)
         else:
             print(">> STATUS: FATAL ERROR - UNIMPLEMENETED!")
 
@@ -40,7 +40,7 @@ class RC:
 
         return d_ub,it,tot_time
 
-    def varySchedPols(initPoint=[10,10],H=150,distro="K-Miss",K_miss=3,heuName="RandSampKMiss",B=415000,c=0.99):
+    def varySchedPols(initPoint=[10,10],H=150,distro="K-Miss",K_miss=1,heuName="RandSampKMiss",B=415000,c=0.99):
 
         schedPols=["HoldKill","ZeroKill","HoldSkip-Next","ZeroSkip-Next"]
         avgRunTime=[]
@@ -53,7 +53,7 @@ class RC:
             refinements=[]
             devs=[]
             for e in range(EPOCH):
-                d_ub,it,tot_time=RC.getD(initPoint,H,schedPol,distro,K_miss,heuName,B,c)
+                d_ub,it,tot_time=ECRTS21.getD(initPoint,H,schedPol,distro,K_miss,heuName,B,c)
                 runTime.append(tot_time)
                 refinements.append(it)
                 devs.append(d_ub)
@@ -63,20 +63,20 @@ class RC:
             sdD.append(stat.stdev(devs))
 
 
-        dynA=Benchmarks.DC.A
-        dynB=Benchmarks.DC.B
-        dynC=Benchmarks.DC.C
-        dynD=Benchmarks.DC.D
-        K=Benchmarks.DC.K
+        dynA=Benchmarks.ECRTS21.A
+        dynB=Benchmarks.ECRTS21.B
+        dynC=Benchmarks.ECRTS21.C
+        dynD=Benchmarks.ECRTS21.D
+        K=Benchmarks.ECRTS21.K
         n=dynA.shape[0]
         systemObj=System(dynA,dynB,dynC,dynD,K)
-        initPointArrayRep=np.array(initPoint+[0,0,0]).reshape(5,-1)
+        initPointArrayRep=np.array(initPoint+[0,0,0,0]).reshape(6,-1)
         randSampObj=randSampObj=RandSampling(systemObj,H,schedPol,distro,K_miss)
         nomTraj=randSampObj.getAllHitTraj(initPointArrayRep)
         (s,randSamps)=randSampObj.getSamples(initPointArrayRep,10)
         allMissTraj=randSampObj.getAllMissTraj(initPointArrayRep)
 
-        print("\n\n\n>> RC Network Report")
+        print("\n\n\n>> ECRTS21 Network Report")
 
         for i in range(len(schedPols)):
             print(">>\t Scheduling Policy: ",schedPols[i],";\t Misses: ",K_miss)
@@ -85,9 +85,9 @@ class RC:
             print("\t\t* Avg. Upper Bound d: ",avgD[i])
             print("\t\t* SD. Upper Bound d: ",sdD[i])
 
-        Viz.vizTrajs(nomTraj,randSamps,avgD[3],fname="rc_network")
+        Viz.vizTrajs(nomTraj,randSamps,avgD[3],fname="ECRTS21")
 
-    def varyC(initPoint=[10,10],H=150,schedPol="HoldSkip-Next",distro="K-Miss",K_miss=3,heuName="RandSampKMiss",B=415000):
+    def varyC(initPoint=[10,10],H=150,schedPol="HoldSkip-Next",distro="K-Miss",K_miss=1,heuName="RandSampKMiss",B=415000):
         listC=[]
         listD=[]
         listSDD=[]
@@ -101,7 +101,7 @@ class RC:
             refinements=[]
             devs=[]
             for e in range(EPOCH):
-                d_ub,it,tot_time=RC.getD(initPoint,H,schedPol,distro,K_miss,heuName,B,c)
+                d_ub,it,tot_time=ECRTS21.getD(initPoint,H,schedPol,distro,K_miss,heuName,B,c)
                 runTime.append(tot_time)
                 refinements.append(it)
                 devs.append(d_ub)
@@ -111,10 +111,10 @@ class RC:
             listSDD.append(stat.stdev(devs))
             c=c+stepSize
 
-        Viz.vizVaryC(listC,listD,listSDD,listItNum,fname="rc")
+        Viz.vizVaryC(listC,listD,listSDD,listItNum,fname="ECRTS21")
 
     def varK_miss(initPoint=[10,10],H=150,schedPol="HoldSkip-Next",distro="K-Miss",heuName="RandSampKMiss",B=415000,c=0.99):
-        K_miss_list=[2,4,8,16]
+        K_miss_list=[2,3]
         avgRunTime=[]
         avgItNum=[]
         avgD=[]
@@ -125,7 +125,7 @@ class RC:
             refinements=[]
             devs=[]
             for e in range(EPOCH):
-                d_ub,it,tot_time=RC.getD(initPoint,H,schedPol,distro,K_miss,heuName,B,c)
+                d_ub,it,tot_time=ECRTS21.getD(initPoint,H,schedPol,distro,K_miss,heuName,B,c)
                 runTime.append(tot_time)
                 refinements.append(it)
                 devs.append(d_ub)
@@ -135,7 +135,7 @@ class RC:
             sdD.append(stat.stdev(devs))
 
 
-        print("\n\n\n>> RC Network Report")
+        print("\n\n\n>> ECRTS21 Network Report")
 
         for i in range(len(K_miss_list)):
             print(">>\t Scheduling Policy: ",schedPol,";\t Misses: ",K_miss_list[i])
@@ -156,6 +156,6 @@ class RC:
 if True:
     initPoint=[10,10]
     H=150
-    #RC.varySchedPols(initPoint=[10,10],H=150) # Set Parameter R=50 before executing
-    RC.varyC(initPoint=[10,10],H=150) # Set Parameter R=10 before executing
-    #RC.varK_miss(initPoint=[10,10],H=150) # Set Parameter R=50 before executing
+    #ECRTS21.varySchedPols(initPoint=[10,10],H=150) # Set Parameter R=50 before executing
+    #ECRTS21.varyC(initPoint=[10,10],H=150) # Set Parameter R=10 before executing
+    ECRTS21.varK_miss(initPoint=[10,10],H=150) # Set Parameter R=50 before executing

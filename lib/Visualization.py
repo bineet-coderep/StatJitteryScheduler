@@ -72,15 +72,19 @@ class Viz:
         #plt.legend()
         plt.show()
 
-    def vizVaryC(listC,listD,listItNum,fname="benchmark"):
+    def vizVaryC(listC,listD,listVar,listItNum,fname="benchmark"):
 
         plt.figure()
         plt.xlabel("c",fontsize=21)
+        plt.ylabel("Max. Deviation",fontsize=21)
         #plt.ylabel("Deviation and Refi",fontsize=20)
 
+        err_up = [a + b for a, b in zip(listD, listVar)]
+        err_down = [a - b for a, b in zip(listD, listVar)]
+        plt.plot(listC,err_up,color='cyan',label="SD")
+        plt.plot(listC,err_down,color='cyan')
+        plt.plot(listC,listD,label="Mean")
+        #plt.plot(listC,listItNum,label="Refinements")
 
-        plt.plot(listC,listD,label="Max. Deviation")
-        plt.plot(listC,listItNum,label="Refinements")
-
-        plt.legend(fontsize=21)
+        plt.legend(fontsize=20)
         plt.savefig(OUTPUT_PATH+'/'+fname+'_varyC.pdf', format='pdf')
