@@ -1,4 +1,4 @@
-# Steering
+# F1Tenth
 
 ## Varying Scheduling Policy
 
@@ -15,30 +15,30 @@ EPOCH=50
 ### Results
 
 ```shell
->> Steering Network Report
+>> F1Tenth Network Report
 >>	 Scheduling Policy:  HoldKill ;	 Misses:  3
-		* Avg. Time Taken:  1.675321044921875
-		* Avg. Refinements Made:  0
-		* Avg. Upper Bound d:  3.8093535275443546
+		* Avg. Time Taken:  2.0230342292785646
+		* Avg. Refinements Made:  0.02
+		* Avg. Upper Bound d:  8.76262855344387
 		* SD. Upper Bound d:  0.0
 >>	 Scheduling Policy:  ZeroKill ;	 Misses:  3
-		* Avg. Time Taken:  5.288655776977539
-		* Avg. Refinements Made:  1.56
-		* Avg. Upper Bound d:  7.835086026316143
-		* SD. Upper Bound d:  0.14953745434319754
+		* Avg. Time Taken:  4.997739143371582
+		* Avg. Refinements Made:  1.26
+		* Avg. Upper Bound d:  15.928067916119746
+		* SD. Upper Bound d:  0.5480550831624622
 >>	 Scheduling Policy:  HoldSkip-Next ;	 Misses:  3
-		* Avg. Time Taken:  3.2592306470870973
-		* Avg. Refinements Made:  0.38
-		* Avg. Upper Bound d:  4.650475979003898
-		* SD. Upper Bound d:  0.0
+		* Avg. Time Taken:  7.185490546226501
+		* Avg. Refinements Made:  1.66
+		* Avg. Upper Bound d:  14.199623740694104
+		* SD. Upper Bound d:  0.6545090602179757
 >>	 Scheduling Policy:  ZeroSkip-Next ;	 Misses:  3
-		* Avg. Time Taken:  7.032051749229431
-		* Avg. Refinements Made:  1.46
-		* Avg. Upper Bound d:  7.207225134030079
-		* SD. Upper Bound d:  0.20324532413697333
+		* Avg. Time Taken:  6.07640423297882
+		* Avg. Refinements Made:  1.42
+		* Avg. Upper Bound d:  14.016338953408209
+		* SD. Upper Bound d:  0.5002452402857631
 ```
 
- [steering_safety_envelope.pdf](steering_safety_envelope.pdf) 
+  [F1Tenth_Trajs_safety_envelope.pdf](F1Tenth_Trajs_safety_envelope.pdf) 
 
 ## Varying $c$
 
@@ -56,7 +56,7 @@ c=0.51
 
 ### Results
 
- [steering_varyC.pdf](steering_varyC.pdf) 
+ [F1Tenth_varC_varyC.pdf](F1Tenth_varC_varyC.pdf)  
 
 ## Varying No. Of Misses
 
@@ -74,26 +74,26 @@ K_miss_list=[2,4,8,16]
 ### Results
 
 ```shell
->> Steering Network Report
+>> F1Tenth Network Report
 >>	 Scheduling Policy:  HoldSkip-Next ;	 Misses:  2
-		* Avg. Time Taken:  2.6603681659698486
-		* Avg. Refinements Made:  0.06
-		* Avg. Upper Bound d:  3.6254914217562866
-		* SD. Upper Bound d:  0.0
+		* Avg. Time Taken:  4.60040964603424
+		* Avg. Refinements Made:  0.88
+		* Avg. Upper Bound d:  8.6505698747975
+		* SD. Upper Bound d:  0.47629142773955974
 >>	 Scheduling Policy:  HoldSkip-Next ;	 Misses:  4
-		* Avg. Time Taken:  3.9452413845062257
-		* Avg. Refinements Made:  0.68
-		* Avg. Upper Bound d:  5.645861879343299
-		* SD. Upper Bound d:  0.13611940907774886
+		* Avg. Time Taken:  6.519974722862243
+		* Avg. Refinements Made:  1.66
+		* Avg. Upper Bound d:  20.683949483591764
+		* SD. Upper Bound d:  1.4999902298423684
 >>	 Scheduling Policy:  HoldSkip-Next ;	 Misses:  8
-		* Avg. Time Taken:  7.185072922706604
-		* Avg. Refinements Made:  1.5
-		* Avg. Upper Bound d:  9.577500298104399
-		* SD. Upper Bound d:  0.9676083296637149
+		* Avg. Time Taken:  6.070730910301209
+		* Avg. Refinements Made:  1.44
+		* Avg. Upper Bound d:  48.91860533815795
+		* SD. Upper Bound d:  10.75159364380664
 >>	 Scheduling Policy:  HoldSkip-Next ;	 Misses:  16
-		* Avg. Time Taken:  6.059765701293945
-		* Avg. Refinements Made:  1.58
-		* Avg. Upper Bound d:  12.906991697072526
-		* SD. Upper Bound d:  2.429184920731469
+		* Avg. Time Taken:  6.7833133840560915
+		* Avg. Refinements Made:  1.68
+		* Avg. Upper Bound d:  65.29403034211668
+		* SD. Upper Bound d:  16.638298491402438
 ```
 

@@ -159,5 +159,5 @@ if True:
     H=150
     #F1Tenth.varySchedPols(initPoint=[10,10],H=150) # Set Parameter R=50 before executing
     #F1Tenth.varyC(initPoint=[10,10],H=150) # Set Parameter R=10 before executing
-    #F1Tenth.varK_miss(initPoint=[10,10],H=150) # Set Parameter R=50 before executing
-    F1Tenth.getD(initPoint=[10,10],H=150,schedPol="HoldKill") # Set Parameter R=50 before executing
+    F1Tenth.varK_miss(initPoint=[10,10],H=150) # Set Parameter R=50 before executing
+    #F1Tenth.getD(initPoint=[10,10],H=150,schedPol="HoldKill") # Set Parameter R=50 before executing
