@@ -61,6 +61,8 @@ class Heuristics:
 
         (s,randTrajs)=randSamp.getSamples(self.initPoint,K)
 
+        #print(s)
+
 
         nomTraj=randSamp.getAllHitTraj(self.initPoint)
 

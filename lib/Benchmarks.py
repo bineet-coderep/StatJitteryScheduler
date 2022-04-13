@@ -85,6 +85,43 @@ class Benchmarks:
         d=0.050
         n=5 # Number of max deadline misses
 
+    class IllustEg:
+        A=np.array(
+        [[0.1, 0.2],
+        [0.2,0.1]
+        ]
+        )
+        B=np.array(
+        [[0.1],
+        [0.2]
+        ]
+        )
+        C=np.array(
+        [[0,0]
+        ]
+        )
+        D=np.array(
+        [[0]
+        ]
+        )
+        Q=np.array(
+        [[1, 0],
+        [0,1]
+        ]
+        )
+        R=np.array(
+        [[1]
+        ]
+        )
+        K=-np.array(
+        [
+        [0.05149186, 0.04189839]
+        ])
+        '''K=np.array(
+        [
+        [-10000, -10000]
+        ])'''
+
     class ECRTS21:
         A=np.array(
         [[1.1053, 0],
@@ -183,3 +220,40 @@ class Benchmarks:
         [[0]
         ]
         )
+
+    class F1Tenth:
+        A=np.array(
+        [[1, 0.13],
+        [0,1]
+        ]
+        )
+        B=np.array(
+        [[0.02559],
+        [0.3937]
+        ]
+        )
+        C=np.array(
+        [[0,0]
+        ]
+        )
+        D=np.array(
+        [[0]
+        ]
+        )
+        Q=np.array(
+        [[1, 0],
+        [0,1]
+        ]
+        )
+        R=np.array(
+        [[1]
+        ]
+        )
+        K=np.array(
+        [
+        [0.2935, 0.4403]
+        ])
+        '''K=np.array(
+        [
+        [-10000, -10000]
+        ])'''

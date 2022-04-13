@@ -32,6 +32,7 @@ class StatVerJFB:
         print(">> STATUS: Statistically Verifying . . .")
         time_taken=time.time()
         # Generate random samples according to JFB
+        #print(self.JFB_params.K)
         (s,randSamples)=self.randSampObj.getSamples(self.initPoint,self.JFB_params.K)
         nomTraj=self.randSampObj.getAllHitTraj(self.initPoint)
         # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

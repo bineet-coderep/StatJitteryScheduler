@@ -7,7 +7,7 @@ import random
 from lib.RandomSampling import *
 import matplotlib.pyplot as plt
 
-class Viz:
+class Viz2:
 
     def vizTrajs(allHitTraj,randTrajs,d_ub,th1=0,th2=1,fname="benchmark"):
         plt.figure()
@@ -88,3 +88,37 @@ class Viz:
 
         plt.legend(fontsize=20)
         plt.savefig(OUTPUT_PATH+'/'+fname+'_varyC.pdf', format='pdf')
+
+
+class Viz:
+
+    def plotSafetyEnv(nominalRS,dList,maxT,safeDev,fname):
+        th1=0
+        th2=1
+
+        plt.figure()
+        fig, ax = plt.subplots()
+        nominal=SetOp.getSimpleRep(nominalRS)
+        H=len(nominal)
+        nominalX=[nominal[t][th1] for t in range(H)]
+        nominalY=[nominal[t][th2] for t in range(H)]
+
+        for t in range(H):
+            #print(nominal[t][th1],nominal[t][th2])
+            circ1=ax.add_patch(plt.Circle((nominal[t][th1], nominal[t][th2]), safeDev, color='cyan',alpha=1))
+            ax.add_patch(circ1)
+
+        for t in range(H):
+            circ2=ax.add_patch(plt.Circle((nominal[t][th1], nominal[t][th2]), dList[t], color='green',alpha=0.2))
+            ax.add_patch(circ2)
+
+        for t in range(H):
+            if dList[t]>safeDev:
+                #plt.scatter(nominal[t][th1], nominal[t][th2],marker='X',markersize=3,color='r')
+                circ2=ax.add_patch(plt.Circle((nominal[t][th1], nominal[t][th2]), dList[t], color='red',alpha=0.2))
+                ax.add_patch(circ2)
+
+        plt.plot(nominalX,nominalY,color='k',markersize=2,linewidth=3)
+
+        plt.show()
+        ax.savefig(OUTPUT_PATH+'/'+fname+"_safety_envelope"+'.pdf', format='pdf')

@@ -44,6 +44,7 @@ class DevCompStat:
             rslt=statVerifier.isSafe(d_ub)
             if rslt!=True:
                 d_ub=rslt+P
+                #print("\t>> SUB-STATUS: d: ",d_ub)
             else:
                 break;
             it=it+1
