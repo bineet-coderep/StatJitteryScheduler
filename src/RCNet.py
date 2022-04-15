@@ -10,6 +10,7 @@ from lib.MainAlgo import *
 from lib.System import *
 from lib.RandomSampling import *
 from lib.Visualization import *
+from lib.UnsafeTraj import *
 
 class RC:
 
@@ -43,6 +44,7 @@ class RC:
     def varySchedPols(initPoint=[10,10],H=150,distro="K-Miss",K_miss=3,heuName="RandSampKMiss",B=415000,c=0.99):
 
         schedPols=["HoldKill","ZeroKill","HoldSkip-Next","ZeroSkip-Next"]
+        schedPols=["HoldSkip-Next"]
         avgRunTime=[]
         avgItNum=[]
         avgD=[]
@@ -85,7 +87,7 @@ class RC:
             print("\t\t* Avg. Upper Bound d: ",avgD[i])
             print("\t\t* SD. Upper Bound d: ",sdD[i])
 
-        Viz.vizTrajs(nomTraj,randSamps,avgD[3],fname="rc_network")
+        Viz2.vizTrajs(nomTraj,randSamps,avgD[0],fname="rc_network")
 
     def varyC(initPoint=[10,10],H=150,schedPol="HoldSkip-Next",distro="K-Miss",K_miss=3,heuName="RandSampKMiss",B=415000):
         listC=[]
@@ -144,7 +146,48 @@ class RC:
             print("\t\t* Avg. Upper Bound d: ",avgD[i])
             print("\t\t* SD. Upper Bound d: ",sdD[i])
 
+    def varySchedPolsShowViolation(initPoint=[10,10],H=150,distro="K-Miss",K_miss=3,heuName="RandSampKMiss",B=415000,c=0.99):
 
+        schedPols=["HoldKill","ZeroKill","HoldSkip-Next","ZeroSkip-Next"]
+        schedPols=["HoldSkip-Next"]
+        avgRunTime=[]
+        avgItNum=[]
+        avgD=[]
+        sdD=[]
+
+        for schedPol in schedPols:
+            runTime=[]
+            refinements=[]
+            devs=[]
+            for e in range(EPOCH):
+                d_ub,it,tot_time=RC.getD(initPoint,H,schedPol,distro,K_miss,heuName,B,c)
+                runTime.append(tot_time)
+                refinements.append(it)
+                devs.append(d_ub)
+            avgRunTime.append(stat.mean(runTime))
+            avgItNum.append(stat.mean(refinements))
+            avgD.append(stat.mean(devs))
+            sdD.append(stat.stdev(devs))
+
+
+        dynA=Benchmarks.DC.A
+        dynB=Benchmarks.DC.B
+        dynC=Benchmarks.DC.C
+        dynD=Benchmarks.DC.D
+        K=Benchmarks.DC.K
+        n=dynA.shape[0]
+        systemObj=System(dynA,dynB,dynC,dynD,K)
+        initPointArrayRep=np.array(initPoint+[0,0,0]).reshape(5,-1)
+        randSampObj=randSampObj=RandSampling(systemObj,H,schedPol,distro,K_miss)
+        nomTraj=randSampObj.getAllHitTraj(initPointArrayRep)
+        (s,randSamps)=randSampObj.getSamples(initPointArrayRep,10)
+        allMissTraj=randSampObj.getAllMissTraj(initPointArrayRep)
+
+        uTrajObj=UnsafeTraj(systemObj,initPointArrayRep,H,schedPol,distro,K_miss+1,B,c)
+        randSampsVio=uTrajObj.getVioTrajs(avgD[0],1)
+
+
+        Viz2.vizTrajsVio(nomTraj,randSamps,randSampsVio,avgD[0],fname="rc_network_trajs_vio")
 
 
 
@@ -156,6 +199,7 @@ class RC:
 if True:
     initPoint=[10,10]
     H=150
-    #RC.varySchedPols(initPoint=[10,10],H=150) # Set Parameter R=50 before executing
-    RC.varyC(initPoint=[10,10],H=150) # Set Parameter R=10 before executing
+    RC.varySchedPols(initPoint=[10,10],H=150) # Set Parameter R=50 before executing
+    #RC.varyC(initPoint=[10,10],H=150) # Set Parameter R=10 before executing
     #RC.varK_miss(initPoint=[10,10],H=150) # Set Parameter R=50 before executing
+    #RC.varySchedPolsShowViolation(initPoint=[10,10],H=150) # Set Parameter R=50 before executing

@@ -10,6 +10,7 @@ from lib.MainAlgo import *
 from lib.System import *
 from lib.RandomSampling import *
 from lib.Visualization import *
+from lib.UnsafeTraj import *
 
 class ECRTS21:
 
@@ -144,6 +145,48 @@ class ECRTS21:
             print("\t\t* Avg. Upper Bound d: ",avgD[i])
             print("\t\t* SD. Upper Bound d: ",sdD[i])
 
+    def varySchedPolsShowViolation(initPoint=[10,10],H=150,distro="K-Miss",K_miss=1,heuName="RandSampKMiss",B=415000,c=0.99):
+
+        schedPols=["HoldKill","ZeroKill","HoldSkip-Next","ZeroSkip-Next"]
+        schedPols=["HoldSkip-Next"]
+        avgRunTime=[]
+        avgItNum=[]
+        avgD=[]
+        sdD=[]
+
+        for schedPol in schedPols:
+            runTime=[]
+            refinements=[]
+            devs=[]
+            for e in range(EPOCH):
+                d_ub,it,tot_time=ECRTS21.getD(initPoint,H,schedPol,distro,K_miss,heuName,B,c)
+                runTime.append(tot_time)
+                refinements.append(it)
+                devs.append(d_ub)
+            avgRunTime.append(stat.mean(runTime))
+            avgItNum.append(stat.mean(refinements))
+            avgD.append(stat.mean(devs))
+            sdD.append(stat.stdev(devs))
+
+
+        dynA=Benchmarks.ECRTS21.A
+        dynB=Benchmarks.ECRTS21.B
+        dynC=Benchmarks.ECRTS21.C
+        dynD=Benchmarks.ECRTS21.D
+        K=Benchmarks.ECRTS21.K
+        n=dynA.shape[0]
+        systemObj=System(dynA,dynB,dynC,dynD,K)
+        initPointArrayRep=np.array(initPoint+[0,0,0,0]).reshape(6,-1)
+        randSampObj=randSampObj=RandSampling(systemObj,H,schedPol,distro,K_miss)
+        nomTraj=randSampObj.getAllHitTraj(initPointArrayRep)
+        (s,randSamps)=randSampObj.getSamples(initPointArrayRep,10)
+        allMissTraj=randSampObj.getAllMissTraj(initPointArrayRep)
+
+        uTrajObj=UnsafeTraj(systemObj,initPointArrayRep,H,schedPol,distro,K_miss+1,B,c)
+        randSampsVio=uTrajObj.getVioTrajs(avgD[0],1)
+
+
+        Viz2.vizTrajsVio(nomTraj,randSamps,randSampsVio,avgD[0],fname="uso_trajs")
 
 
 
@@ -158,4 +201,5 @@ if True:
     H=150
     #ECRTS21.varySchedPols(initPoint=[10,10],H=150) # Set Parameter R=50 before executing
     #ECRTS21.varyC(initPoint=[10,10],H=150) # Set Parameter R=10 before executing
-    ECRTS21.varK_miss(initPoint=[10,10],H=150) # Set Parameter R=50 before executing
+    #ECRTS21.varK_miss(initPoint=[10,10],H=150) # Set Parameter R=50 before executing
+    ECRTS21.varySchedPolsShowViolation(initPoint=[10,10],H=150) # Set Parameter R=50 before executing

@@ -10,6 +10,7 @@ from lib.MainAlgo import *
 from lib.System import *
 from lib.RandomSampling import *
 from lib.Visualization import *
+from lib.UnsafeTraj import *
 
 class F1Tenth:
 
@@ -116,6 +117,7 @@ class F1Tenth:
 
     def varK_miss(initPoint=[10,10],H=150,schedPol="HoldSkip-Next",distro="K-Miss",heuName="RandSampKMiss",B=415000,c=0.99):
         K_miss_list=[2,4,8,16]
+        #K_miss_list=[1,2,3,4]
         avgRunTime=[]
         avgItNum=[]
         avgD=[]
@@ -145,6 +147,50 @@ class F1Tenth:
             print("\t\t* Avg. Upper Bound d: ",avgD[i])
             print("\t\t* SD. Upper Bound d: ",sdD[i])
 
+    def varySchedPolsShowViolation(initPoint=[10,10],H=150,distro="K-Miss",K_miss=3,heuName="RandSampKMiss",B=415000,c=0.99):
+
+        #schedPols=["HoldKill","ZeroKill","HoldSkip-Next","ZeroSkip-Next"]
+        schedPols=["HoldSkip-Next"]
+        avgRunTime=[]
+        avgItNum=[]
+        avgD=[]
+        sdD=[]
+
+        for schedPol in schedPols:
+            runTime=[]
+            refinements=[]
+            devs=[]
+            for e in range(EPOCH):
+                #print("++++++++")
+                d_ub,it,tot_time=F1Tenth.getD(initPoint,H,schedPol,distro,K_miss,heuName,B,c)
+                runTime.append(tot_time)
+                refinements.append(it)
+                devs.append(d_ub)
+            avgRunTime.append(stat.mean(runTime))
+            avgItNum.append(stat.mean(refinements))
+            avgD.append(stat.mean(devs))
+            sdD.append(stat.stdev(devs))
+
+
+        dynA=Benchmarks.F1Tenth.A
+        dynB=Benchmarks.F1Tenth.B
+        dynC=Benchmarks.F1Tenth.C
+        dynD=Benchmarks.F1Tenth.D
+        K=Benchmarks.F1Tenth.K
+        n=dynA.shape[0]
+        systemObj=System(dynA,dynB,dynC,dynD,K)
+        initPointArrayRep=np.array(initPoint+[0,0,0]).reshape(5,-1)
+        randSampObj=randSampObj=RandSampling(systemObj,H,schedPol,distro,K_miss)
+        nomTraj=randSampObj.getAllHitTraj(initPointArrayRep)
+        (s,randSamps)=randSampObj.getSamples(initPointArrayRep,10)
+        allMissTraj=randSampObj.getAllMissTraj(initPointArrayRep)
+
+        uTrajObj=UnsafeTraj(systemObj,initPointArrayRep,H,schedPol,distro,K_miss+1,B,c)
+        randSampsVio=uTrajObj.getVioTrajs(avgD[0],1)
+
+
+        Viz2.vizTrajsVio(nomTraj,randSamps,randSampsVio,avgD[0],fname="F1Tenth_Trajs")
+
 
 
 
@@ -159,5 +205,6 @@ if True:
     H=150
     #F1Tenth.varySchedPols(initPoint=[10,10],H=150) # Set Parameter R=50 before executing
     #F1Tenth.varyC(initPoint=[10,10],H=150) # Set Parameter R=10 before executing
-    F1Tenth.varK_miss(initPoint=[10,10],H=150) # Set Parameter R=50 before executing
+    #F1Tenth.varK_miss(initPoint=[10,10],H=150) # Set Parameter R=50 before executing
     #F1Tenth.getD(initPoint=[10,10],H=150,schedPol="HoldKill") # Set Parameter R=50 before executing
+    F1Tenth.varySchedPolsShowViolation(initPoint=[10,10],H=150) # Set Parameter R=50 before executing
