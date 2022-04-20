@@ -11,6 +11,7 @@ from lib.System import *
 from lib.RandomSampling import *
 from lib.Visualization import *
 from lib.UnsafeTraj import *
+import pandas as pd
 
 class Steering:
 
@@ -98,22 +99,27 @@ class Steering:
         c=0.51
         stepSize=float((0.99-c)/STEP)
 
+        cDev=[]
         for i in range(STEP):
-            runTime=[]
-            refinements=[]
-            devs=[]
+            #runTime=[]
+            #refinements=[]
+            #devs=[]
             for e in range(EPOCH):
                 d_ub,it,tot_time=Steering.getD(initPoint,H,schedPol,distro,K_miss,heuName,B,c)
-                runTime.append(tot_time)
-                refinements.append(it)
-                devs.append(d_ub)
-            listC.append(c)
-            listItNum.append(stat.mean(refinements))
-            listD.append(stat.mean(devs))
-            listSDD.append(stat.stdev(devs))
+                #runTime.append(tot_time)
+                #refinements.append(it)
+                #devs.append(d_ub)
+                cDev.append([c,d_ub])
+            #listC.append(c)
+            #listItNum.append(stat.mean(refinements))
+            #listD.append(stat.mean(devs))
+            #listSDD.append(stat.stdev(devs))
             c=c+stepSize
 
-        Viz.vizVaryC(listC,listD,listSDD,listItNum,fname="steering")
+        mean_var_df = pd.DataFrame(cDev,columns=['c','dev'])
+
+
+        Viz2.vizVaryC(mean_var_df,fname="steering")
 
     def varK_miss(initPoint=[10,10],H=150,schedPol="HoldSkip-Next",distro="K-Miss",heuName="RandSampKMiss",B=415000,c=0.99):
         K_miss_list=[2,4,8,16]
@@ -183,13 +189,11 @@ class Steering:
         (s,randSamps)=randSampObj.getSamples(initPointArrayRep,10)
         allMissTraj=randSampObj.getAllMissTraj(initPointArrayRep)
 
-        print(avgD[0])
-
         uTrajObj=UnsafeTraj(systemObj,initPointArrayRep,H,schedPol,distro,K_miss+1,B,c)
-        randSampsVio=uTrajObj.getVioTrajs(avgD[0]+1.2,5)
+        randSampsVio,vioT=uTrajObj.getVioTrajs(avgD[0],1)
 
 
-        Viz2.vizTrajsVio(nomTraj,randSamps,randSampsVio,avgD[0],fname="steering_trajs")
+        Viz2.vizTrajsVio(nomTraj,randSamps,randSampsVio,vioT,avgD[0],fname="steering_trajs")
 
 
 
@@ -202,7 +206,7 @@ class Steering:
 if True:
     initPoint=[10,10]
     H=150
-    Steering.varySchedPols(initPoint=[10,10],H=150) # Set Parameter R=50 before executing
-    #Steering.varyC(initPoint=[10,10],H=150) # Set Parameter R=10 before executing
+    #Steering.varySchedPols(initPoint=[10,10],H=150) # Set Parameter R=50 before executing
+    Steering.varyC(initPoint=[10,10],H=150) # Set Parameter R=10 before executing
     #Steering.varK_miss(initPoint=[10,10],H=150) # Set Parameter R=50 before executing
     #Steering.varySchedPolsShowViolation(initPoint=[10,10],H=150) # Set Parameter R=50 before executing

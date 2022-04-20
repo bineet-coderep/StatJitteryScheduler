@@ -11,6 +11,7 @@ from lib.System import *
 from lib.RandomSampling import *
 from lib.Visualization import *
 from lib.UnsafeTraj import *
+import pandas as pd
 
 class ECRTS21:
 
@@ -97,22 +98,27 @@ class ECRTS21:
         c=0.51
         stepSize=float((0.99-c)/STEP)
 
+        cDev=[]
         for i in range(STEP):
-            runTime=[]
-            refinements=[]
-            devs=[]
+            #runTime=[]
+            #refinements=[]
+            #devs=[]
             for e in range(EPOCH):
                 d_ub,it,tot_time=ECRTS21.getD(initPoint,H,schedPol,distro,K_miss,heuName,B,c)
-                runTime.append(tot_time)
-                refinements.append(it)
-                devs.append(d_ub)
-            listC.append(c)
-            listItNum.append(stat.mean(refinements))
-            listD.append(stat.mean(devs))
-            listSDD.append(stat.stdev(devs))
+                #runTime.append(tot_time)
+                #refinements.append(it)
+                #devs.append(d_ub)
+                cDev.append([c,d_ub])
+            #listC.append(c)
+            #listItNum.append(stat.mean(refinements))
+            #listD.append(stat.mean(devs))
+            #listSDD.append(stat.stdev(devs))
             c=c+stepSize
 
-        Viz.vizVaryC(listC,listD,listSDD,listItNum,fname="ECRTS21")
+        mean_var_df = pd.DataFrame(cDev,columns=['c','dev'])
+
+
+        Viz2.vizVaryC(mean_var_df,fname="ECRTS21")
 
     def varK_miss(initPoint=[10,10],H=150,schedPol="HoldSkip-Next",distro="K-Miss",heuName="RandSampKMiss",B=415000,c=0.99):
         K_miss_list=[2,3]
@@ -183,10 +189,10 @@ class ECRTS21:
         allMissTraj=randSampObj.getAllMissTraj(initPointArrayRep)
 
         uTrajObj=UnsafeTraj(systemObj,initPointArrayRep,H,schedPol,distro,K_miss+1,B,c)
-        randSampsVio=uTrajObj.getVioTrajs(avgD[0],1)
+        randSampsVio,vioT=uTrajObj.getVioTrajs(avgD[0],1)
 
 
-        Viz2.vizTrajsVio(nomTraj,randSamps,randSampsVio,avgD[0],fname="uso_trajs")
+        Viz2.vizTrajsVio(nomTraj,randSamps,randSampsVio,vioT,avgD[0],fname="uso_trajs")
 
 
 
@@ -200,6 +206,6 @@ if True:
     initPoint=[10,10]
     H=150
     #ECRTS21.varySchedPols(initPoint=[10,10],H=150) # Set Parameter R=50 before executing
-    #ECRTS21.varyC(initPoint=[10,10],H=150) # Set Parameter R=10 before executing
+    ECRTS21.varyC(initPoint=[10,10],H=150) # Set Parameter R=10 before executing
     #ECRTS21.varK_miss(initPoint=[10,10],H=150) # Set Parameter R=50 before executing
-    ECRTS21.varySchedPolsShowViolation(initPoint=[10,10],H=150) # Set Parameter R=50 before executing
+    #ECRTS21.varySchedPolsShowViolation(initPoint=[10,10],H=150) # Set Parameter R=50 before executing

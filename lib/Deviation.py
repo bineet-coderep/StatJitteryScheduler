@@ -9,7 +9,7 @@ import math
 
 class Deviation:
 
-    def computeDev(traj1,traj2,dim=3):
+    def computeDev(traj1,traj2,dim=2):
         '''
         Compute the maximum distance between traj1 and traj2
         '''

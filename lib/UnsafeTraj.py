@@ -27,9 +27,11 @@ class UnsafeTraj:
             (s,randSamples)=self.randSampObj.getSamples(self.initPoint,self.JFB_params.K)
             nomTraj=self.randSampObj.getAllHitTraj(self.initPoint)
             vioTrajs=[]
+            vioT=[]
             for traj in randSamples:
                 (d,t)=Deviation.computeDev(traj,nomTraj)
                 if d>safeDev:
                     vioTrajs.append(traj)
+                    vioT.append(t)
                 if len(vioTrajs)>=nVio:
-                    return vioTrajs
+                    return (vioTrajs,vioT)
