@@ -205,7 +205,7 @@ class RC:
 if True:
     initPoint=[10,10]
     H=150
-    #RC.varySchedPols(initPoint=[10,10],H=150) # Set Parameter R=50 before executing
-    RC.varyC(initPoint=[10,10],H=150) # Set Parameter R=10 before executing
+    RC.varySchedPols(initPoint=[10,10],H=150) # Set Parameter R=50 before executing
+    #RC.varyC(initPoint=[10,10],H=150) # Set Parameter R=10 before executing
     #RC.varK_miss(initPoint=[10,10],H=150) # Set Parameter R=50 before executing
     #RC.varySchedPolsShowViolation(initPoint=[10,10],H=150) # Set Parameter R=50 before executing

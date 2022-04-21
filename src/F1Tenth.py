@@ -106,8 +106,8 @@ class F1Tenth:
         listSDD=[]
         listItNum=[]
         STEP=20
-        c=0.99
-        stepSize=float((0.999-c)/STEP)
+        c=0.999
+        stepSize=float((0.9999-c)/STEP)
 
         cDev=[]
 
@@ -220,8 +220,8 @@ class F1Tenth:
 if True:
     initPoint=[10,10]
     H=150
-    #F1Tenth.varySchedPols(initPoint=[10,10],H=150,K_miss=1) # Set Parameter R=50 before executing
-    F1Tenth.varyC(initPoint=[10,10],H=150) # Set Parameter R=10 before executing
+    F1Tenth.varySchedPols(initPoint=[10,10],H=150,K_miss=3) # Set Parameter R=50 before executing
+    #F1Tenth.varyC(initPoint=[10,10],H=150,K_miss=2) # Set Parameter R=10 before executing
     #F1Tenth.varK_miss(initPoint=[10,10],H=150) # Set Parameter R=50 before executing
-    #F1Tenth.getD(initPoint=[10,10],H=150,schedPol="HoldKill") # Set Parameter R=50 before executing
+    #F1Tenth.getD(initPoint=[10,10],H=150,schedPol="HoldKill",c=0.9999) # Set Parameter R=50 before executing
     #F1Tenth.varySchedPolsShowViolation(initPoint=[10,10],H=150,K_miss=3) # Set Parameter R=50 before executing

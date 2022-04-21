@@ -59,7 +59,7 @@ class Viz2:
 
         #plt.legend()
         #plt.show()
-        plt.savefig(OUTPUT_PATH+'/'+fname+"_safety_envelope"+'.pdf', format='pdf')
+        plt.savefig(OUTPUT_PATH+'/'+fname+"_safety_envelope"+'.pdf', format='pdf',bbox_inches='tight',pad_inches = 0,transparent = True)
 
     def vizTrajs2D(allHitTraj,randTrajs,d_ub,th1=0,th2=1,fname="benchmark"):
         plt.figure()

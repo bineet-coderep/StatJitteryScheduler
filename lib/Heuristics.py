@@ -45,7 +45,8 @@ class Heuristics:
         allMissTraj=randSamp.getAllMissTraj(self.initPoint)
 
 
-        (d,t)=Deviation.computeDevTrajectories(nomTraj,randTrajs+[allMissTraj],self.dim)
+        #(d,t)=Deviation.computeDevTrajectories(nomTraj,randTrajs+[allMissTraj],self.dim)
+        (d,t)=Deviation.computeDevTrajectories(nomTraj,randTrajs,self.dim)
 
 
         return d+P
@@ -76,6 +77,7 @@ class Heuristics:
         print(randTrajs[ctMax][t])
         print(nomTraj[t])
         exit(0)'''
+
 
 
         return d+P

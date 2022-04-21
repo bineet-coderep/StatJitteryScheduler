@@ -207,6 +207,6 @@ if True:
     initPoint=[10,10]
     H=150
     #Steering.varySchedPols(initPoint=[10,10],H=150) # Set Parameter R=50 before executing
-    Steering.varyC(initPoint=[10,10],H=150) # Set Parameter R=10 before executing
+    #Steering.varyC(initPoint=[10,10],H=150) # Set Parameter R=10 before executing
     #Steering.varK_miss(initPoint=[10,10],H=150) # Set Parameter R=50 before executing
-    #Steering.varySchedPolsShowViolation(initPoint=[10,10],H=150) # Set Parameter R=50 before executing
+    Steering.varySchedPolsShowViolation(initPoint=[10,10],H=150) # Set Parameter R=50 before executing

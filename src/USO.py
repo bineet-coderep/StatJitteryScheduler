@@ -206,6 +206,6 @@ if True:
     initPoint=[10,10]
     H=150
     #ECRTS21.varySchedPols(initPoint=[10,10],H=150) # Set Parameter R=50 before executing
-    ECRTS21.varyC(initPoint=[10,10],H=150) # Set Parameter R=10 before executing
+    #ECRTS21.varyC(initPoint=[10,10],H=150) # Set Parameter R=10 before executing
     #ECRTS21.varK_miss(initPoint=[10,10],H=150) # Set Parameter R=50 before executing
-    #ECRTS21.varySchedPolsShowViolation(initPoint=[10,10],H=150) # Set Parameter R=50 before executing
+    ECRTS21.varySchedPolsShowViolation(initPoint=[10,10],H=150) # Set Parameter R=50 before executing
