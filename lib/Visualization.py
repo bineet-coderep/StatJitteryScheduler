@@ -114,9 +114,13 @@ class Viz2:
         #allMissY=[allMissTraj[t][th2][0] for t in range(H)]
         #plt.plot(allHitX,allHitY,label="All Miss", color='r',markersize=2,linewidth=3)
 
+        fg=False
         for t in range(H):
-            0;
-            p = plt.Circle((allHitTraj[t][th1][0], allHitTraj[t][th2][0]), d_ub, facecolor='none', edgecolor='cyan',linewidth=0.4,alpha=0.5)
+            if fg==False:
+                p = plt.Circle((allHitTraj[t][th1][0], allHitTraj[t][th2][0]), d_ub, facecolor='none', edgecolor='cyan',linewidth=0.4,alpha=0.5,label="Safety envelope")
+                fg=True
+            else:
+                p = plt.Circle((allHitTraj[t][th1][0], allHitTraj[t][th2][0]), d_ub, facecolor='none', edgecolor='cyan',linewidth=0.4,alpha=0.5)
             ax.add_patch(p)
             art3d.pathpatch_2d_to_3d(p, z=t, zdir="z")
 
@@ -124,31 +128,42 @@ class Viz2:
 
 
         #plt.plot(allMissX,allMissY,label="All Miss", color='r',markersize=2,linewidth=3)
+        fg=False
         for traj in randTrajs:
             X=[traj[t][th1][0] for t in range(H)]
             Y=[traj[t][th2][0] for t in range(H)]
             #Z=list(range(H))
-            ax.plot3D(X,Y,Z, color='k',markersize=1,linewidth=1,linestyle='--')
+            if fg==False:
+                ax.plot3D(X,Y,Z, color='k',markersize=1,linewidth=1,linestyle='--',label="Random trajectories")
+                fg=True
+            else:
+                ax.plot3D(X,Y,Z, color='k',markersize=1,linewidth=1,linestyle='--')
 
         k=0
+        fg=False
         for traj in randTrajsVio:
             X=[traj[t][th1][0] for t in range(H)]
             Y=[traj[t][th2][0] for t in range(H)]
-            plt.plot(X,Y,Z, color='r',markersize=1,linewidth=1.5,linestyle='--')
+            if fg==False:
+                plt.plot(X,Y,Z, color='r',markersize=1,linewidth=1.5,linestyle='--',label="Violating trajectories")
+                p = plt.Circle((allHitTraj[vioT[k]][th1][0], allHitTraj[vioT[k]][th2][0]), d_ub, facecolor='none', edgecolor='r',linewidth=1,label="Violating enevelope")
+                fg=True
+            else:
+                plt.plot(X,Y,Z, color='r',markersize=1,linewidth=1.5,linestyle='--')
+                p = plt.Circle((allHitTraj[vioT[k]][th1][0], allHitTraj[vioT[k]][th2][0]), d_ub, facecolor='none', edgecolor='r',linewidth=1)
             ax.scatter(X[vioT[k]],Y[vioT[k]],vioT[k],marker='X',color='r',s=50)
             ax.scatter(allHitTraj[vioT[k]][th1][0], allHitTraj[vioT[k]][th2][0],vioT[k],marker='o',color='red',s=40)
-            p = plt.Circle((allHitTraj[vioT[k]][th1][0], allHitTraj[vioT[k]][th2][0]), d_ub, facecolor='none', edgecolor='r',linewidth=1)
             ax.add_patch(p)
             art3d.pathpatch_2d_to_3d(p, z=vioT[k], zdir="z")
             k=k+1
 
-        plt.plot(allHitX,allHitY,Z,label="All Hit", color='g',markersize=2,linewidth=3)
+        plt.plot(allHitX,allHitY,Z, color='g',markersize=2,linewidth=3,label="Nominal trajectory")
 
         #plt.legend()
         #plt.show()
         #plt.savefig(OUTPUT_PATH+'/'+fname+"_safety_envelope"+'.pdf', format='pdf')
 
-        #plt.legend()
+        plt.legend(loc='upper right')
         #plt.show()
         plt.savefig(OUTPUT_PATH+'/'+fname+"_safety_envelope"+'.pdf', format='pdf')
 

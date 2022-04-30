@@ -45,7 +45,7 @@ class F1Tenth:
     def varySchedPols(initPoint=[10,10],H=150,distro="K-Miss",K_miss=3,heuName="RandSampKMiss",B=415000,c=0.99):
 
         #schedPols=["HoldKill","ZeroKill","HoldSkip-Next","ZeroSkip-Next"]
-        schedPols=["HoldKill"]
+        schedPols=["HoldSkip-Next"]
         avgRunTime=[]
         avgItNum=[]
         avgD=[]
@@ -203,7 +203,7 @@ class F1Tenth:
         allMissTraj=randSampObj.getAllMissTraj(initPointArrayRep)
 
         uTrajObj=UnsafeTraj(systemObj,initPointArrayRep,H,schedPol,distro,K_miss+1,B,c)
-        randSampsVio,vioT=uTrajObj.getVioTrajs(avgD[0],1)
+        randSampsVio,vioT=uTrajObj.getVioTrajs(avgD[0]+2,1)
 
 
         Viz2.vizTrajsVio(nomTraj,randSamps,randSampsVio,vioT,avgD[0],fname="F1Tenth_Trajs")
@@ -220,8 +220,8 @@ class F1Tenth:
 if True:
     initPoint=[10,10]
     H=150
-    F1Tenth.varySchedPols(initPoint=[10,10],H=150,K_miss=3) # Set Parameter R=50 before executing
+    #F1Tenth.varySchedPols(initPoint=[10,10],H=150,K_miss=3,c=0.9999) # Set Parameter R=50 before executing
     #F1Tenth.varyC(initPoint=[10,10],H=150,K_miss=2) # Set Parameter R=10 before executing
     #F1Tenth.varK_miss(initPoint=[10,10],H=150) # Set Parameter R=50 before executing
     #F1Tenth.getD(initPoint=[10,10],H=150,schedPol="HoldKill",c=0.9999) # Set Parameter R=50 before executing
-    #F1Tenth.varySchedPolsShowViolation(initPoint=[10,10],H=150,K_miss=3) # Set Parameter R=50 before executing
+    F1Tenth.varySchedPolsShowViolation(initPoint=[10,10],H=150,K_miss=3) # Set Parameter R=50 before executing
