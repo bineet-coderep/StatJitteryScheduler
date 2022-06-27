@@ -127,6 +127,6 @@ Similar (not exactly the same, as it's stochastic) output should be seen:
 
 ```
 
-One should see the similar plot in `/my/location/StatJitteryScheduler/output/`:
+One should see a similar plot in `/my/location/StatJitteryScheduler/output/`:
 
 ![op](op.png)
