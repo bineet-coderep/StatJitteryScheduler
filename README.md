@@ -31,9 +31,9 @@ We then use the Jeffreys’s Bayes factor test to decide between these two hypot
 - [`NumPy`](https://numpy.org/)
 - [`SciPy`](https://scipy.org/)
 - [`mpmath`](https://mpmath.org/)
-- [seaborn](https://seaborn.pydata.org/)
-- [pandas](https://pandas.pydata.org/)
-- [mpl_toolkits](https://matplotlib.org/1.3.0/mpl_toolkits/index.html)
+- [`seaborn`](https://seaborn.pydata.org/)
+- [`pandas`](https://pandas.pydata.org/)
+- [`mpl_toolkits`](https://matplotlib.org/1.3.0/mpl_toolkits/index.html)
 
 ### Downloading `StatDev`
 
