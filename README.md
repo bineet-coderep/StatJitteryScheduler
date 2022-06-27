@@ -4,7 +4,7 @@ The tool is based on the following work:
 
 **Statistical Hypothesis Testing of Controller Implementations Under Timing Uncertainties**. Bineet Ghosh, Clara Hobbs, Shengjie Xu, Parasara Sridhar Duggirala, James H. Anderson, P. S. Thiagarajan, Samarjit Chakraborty. In: The 28th IEEE International Conference on Embedded and Real-Time Computing Systems and Applications (RTCSA). 2022. _(To appear)_.
 
-_Note: We see some latex rendering issues of the README.md file from GitHub's side. We kindly refer the user to the [README.pdf](https://github.com/bineet-coderep/StatJitteryScheduler/blob/main/README.pdf) file to avoid any confusion._
+_Note: We see some latex rendering issues of the `README.md` file from GitHub's side. We kindly refer the user to the [`README.pdf`](https://github.com/bineet-coderep/StatJitteryScheduler/blob/main/README.pdf) file to avoid any confusion._
 
 Performing timing analysis for such safety critical control software tasks with heterogeneous hardware is becoming increasingly challenging. Consequently, a number of recent papers have addressed the problem of stability analysis of feedback control loops in the presence of timing uncertainties (_cf._, deadline misses). Here, we address a different class of safety properties, _viz._, whether the system trajectory deviates too much from the nominal trajectory, with the latter computed for the ideal timing behavior. This has been illustrated on an F1Tenth car example in the following figure.
 
