@@ -13,7 +13,7 @@ In our statistical hypothesis testing framework in Fig. 2, to test if a given $\
 *  $H_0$ (_null hypothesis_): Asserts that with at most probability $c$, a randomly chosen trajectory will have a deviation bounded by $\mathbf{d}_{ub}$ .
 * $H_1$ (_alternative hypothesis_): Asserts that with at least probability $c$, a randomly chosen run will have a deviation that is bounded by $\mathbf{d}_{ub}$. 
 
-We then use the Jeffreys’s Bayes factor test to decide between these two hypotheses. An important consequence of our test is, when the samples we have drawn do not support the alternative hypothesis, they will contain a counterexample with a deviation that exceeds the current value of $\mathbf{d}_{ub}$ . This will lead to the next iteration of hypothesis testing based on a new, larger $\mathbf{d}_{ub}$ . In this sense, our method is driven by a counterexample guided refinement strategy to eventually accept the alternative hypothesis (see Fig. 2). 
+We then use the Jeffreys’s Bayes factor test to decide between these two hypotheses. An important consequence of our test is, when the samples we have drawn do not support the alternative hypothesis, they will contain a counterexample with a deviation that exceeds the current value of $\mathbf{d}_{ub}$. This will lead to the next iteration of hypothesis testing based on a new, larger $\mathbf{d}_{ub}$. In this sense, our method is driven by a counterexample guided refinement strategy to eventually accept the alternative hypothesis (see Fig. 2). 
 
 ![methodology](methodology.png)
 
