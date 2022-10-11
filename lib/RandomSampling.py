@@ -1,5 +1,5 @@
 import os,sys
-PROJECT_ROOT = os.environ['STAT_SCHDLR_ROOT_DIR']
+PROJECT_ROOT = os.environ['STAT_SCHDLR_V2_ROOT_DIR']
 sys.path.append(PROJECT_ROOT)
 
 from Parameters import *
@@ -21,7 +21,7 @@ class RandSampling:
         if self.rand_samp_met=="RGA":
             self.l=self.buildLengthDict()
 
-    def getARandSample(self,initPoint):
+    def getARandSample(self,initSet):
         # Generate a sequence
         random.seed(time.time())
         if self.distro=="Uniform":
@@ -35,7 +35,7 @@ class RandSampling:
 
         # Generate trajectory as per seqn
         schdStrat=SchedStrat(self.systemObj,self.schedPol)
-        traj=schdStrat.getReachSetSeqn(initPoint,seqn)
+        traj=schdStrat.getReachSetSeqn(initSet,seqn)
         return (seqn,traj)
 
 
@@ -121,22 +121,22 @@ class RandSampling:
 
 
 
-    def getSamples(self,initPoint,K):
+    def getSamples(self,initSet,K):
         sequences=[]
         trajectories=[]
         for i in range(K):
-            seqn,traj=self.getARandSample(initPoint)
+            seqn,traj=self.getARandSample(initSet)
             sequences.append(seqn)
             trajectories.append(traj)
 
         return (sequences,trajectories)
 
-    def getAllHitTraj(self,initPoint):
+    def getAllHitTraj(self,initSet):
         schdStrat=SchedStrat(self.systemObj,self.schedPol)
-        nomTraj=schdStrat.getReachSetSeqn(initPoint,[1]*self.H)
+        nomTraj=schdStrat.getReachSetSeqn(initSet,[1]*self.H)
         return nomTraj
 
-    def getAllMissTraj(self,initPoint):
+    def getAllMissTraj(self,initSet):
         schdStrat=SchedStrat(self.systemObj,self.schedPol)
-        nomTraj=schdStrat.getReachSetSeqn(initPoint,[0]*self.H)
+        nomTraj=schdStrat.getReachSetSeqn(initSet,[0]*self.H)
         return nomTraj

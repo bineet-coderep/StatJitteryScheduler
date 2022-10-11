@@ -1,5 +1,5 @@
 import os,sys
-PROJECT_ROOT = os.environ['STAT_SCHDLR_ROOT_DIR']
+PROJECT_ROOT = os.environ['STAT_SCHDLR_V2_ROOT_DIR']
 sys.path.append(PROJECT_ROOT)
 
 from Parameters import *
@@ -11,7 +11,8 @@ from lib.Visualization import *
 
 class Exp:
 
-    def test0(initPoint=[10,10],H=150,schedPol="HoldSkip-Next",distro="K-Miss",K_miss=3,heuName="RandSampKMiss",B=415000,c=0.99):
+    def test0(initSet=[[10,10],[12,10],[12,12],[10,12]],H=150,schedPol="HoldSkip-Next",distro="K-Miss",K_miss=3,heuName="RandSampKMiss",B=415000,c=0.99):
+        initSet=[[10,10],[10,10],[10,10],[10,10]]
         dynA=Benchmarks.DC.A
         dynB=Benchmarks.DC.B
         dynC=Benchmarks.DC.C
@@ -20,16 +21,24 @@ class Exp:
         n=dynA.shape[0]
         systemObj=System(dynA,dynB,dynC,dynD,K)
 
-        initPointArrayRep=np.array(initPoint+[0,0,0]).reshape(5,-1)
-        devStat=DevCompStat(systemObj,n,initPointArrayRep,H,schedPol,distro,K_miss,heuName,B,c)
+        initPointArrayReps=[]
+        for initPoint in initSet:
+            initPointArrayRep=np.array(initPoint+[0,0,0]).reshape(5,-1)
+            initPointArrayReps.append(initPointArrayRep)
+
+        devStat=DevCompStat(systemObj,n,initPointArrayReps,H,schedPol,distro,K_miss,heuName,B,c)
 
         d_ub=devStat.mainAlgo()
 
+        exit()
+
         randSampObj=randSampObj=RandSampling(systemObj,H,schedPol,distro,K_miss)
-        nomTraj=randSampObj.getAllHitTraj(initPointArrayRep)
-        (s,randSamps)=randSampObj.getSamples(initPointArrayRep,10)
-        allMissTraj=randSampObj.getAllMissTraj(initPointArrayRep)
-        Viz.vizTrajs(nomTraj,randSamps,d_ub)
+        nomTraj=randSampObj.getAllHitTraj(initPointArrayReps)
+        (s,randSamps)=randSampObj.getSamples(initPointArrayReps,10)
+        allMissTraj=randSampObj.getAllMissTraj(initPointArrayReps)
+
+        Viz2.vizTrajs(nomTraj,randSamps,2)
+        exit(0)
 
     def test1(initPoint=[10,10],H=150,schedPol="ZeroSkip-Next",distro="K-Miss",K_miss=3,heuName="RandSampKMiss",B=1000,c=0.99):
         dynA=Benchmarks.Steering.A

@@ -1,5 +1,5 @@
 import os,sys
-PROJECT_ROOT = os.environ['STAT_SCHDLR_ROOT_DIR']
+PROJECT_ROOT = os.environ['STAT_SCHDLR_V2_ROOT_DIR']
 sys.path.append(PROJECT_ROOT)
 
 from Parameters import *
@@ -20,23 +20,30 @@ class SchedStrat:
         self.K=systemObj.K # Control
         self.methodName=methodName
 
-    def getReachSetSeqn(self,initPoint,seqn):
+    def getReachSetSeqn(self,initSet,seqn):
         '''
         Given a sequence, it returns the reachable set
         '''
         if self.methodName=="HoldSkip-Next":
-            return self.reachSetHoldSkipNext(initPoint,seqn)
+            return self.reachSetHoldSkipNext(initSet,seqn)
         elif self.methodName=="ZeroKill":
-            return self.reachSetZeroKill(initPoint,seqn)
+            return self.reachSetZeroKill(initSet,seqn)
         elif self.methodName=="HoldKill":
-            return self.reachSetHoldKill(initPoint,seqn)
+            return self.reachSetHoldKill(initSet,seqn)
         elif self.methodName=="ZeroSkip-Next":
-            return self.reachSetZeroSkipNext(initPoint,seqn)
+            return self.reachSetZeroSkipNext(initSet,seqn)
         else:
             print(">> STATUS: FATAL ERROR - Unimplemented!")
             exit(0)
 
     def reachSetHoldSkipNext(self,initSet,seqn):
+        rsList=[]
+        for initPoint in initSet:
+            rsListVert=self.reachSetHoldSkipNext2(initPoint,seqn)
+            rsList.append(rsListVert)
+        return rsList
+
+    def reachSetHoldSkipNext2(self,initPoint,seqn):
         p, r = self.B.shape
 
         # Split apart the two pieces of K, if necessary
@@ -65,11 +72,11 @@ class SchedStrat:
 
         rsList=[]
 
-        rsList.append(copy.copy(initSet))
+        rsList.append(copy.copy(initPoint))
 
         t_max=len(seqn)
 
-        rs=np.matmul(A_HH,initSet)
+        rs=np.matmul(A_HH,initPoint)
         rsList.append(copy.copy(rs))
 
         for t in range(1,t_max):
@@ -91,7 +98,14 @@ class SchedStrat:
         return rsList
 
     def reachSetZeroSkipNext(self,initSet,seqn):
-        
+        rsList=[]
+        for initPoint in initSet:
+            rsListVert=self.reachSetZeroSkipNext2(initPoint,seqn)
+            rsList.append(rsListVert)
+        return rsList
+
+    def reachSetZeroSkipNext2(self,initPoint,seqn):
+
         p, r = self.B.shape
 
         # Split apart the two pieces of K, if necessary
@@ -120,11 +134,11 @@ class SchedStrat:
 
         rsList=[]
 
-        rsList.append(copy.copy(initSet))
+        rsList.append(copy.copy(initPoint))
 
         t_max=len(seqn)
 
-        rs=np.matmul(A_HH,initSet)
+        rs=np.matmul(A_HH,initPoint)
         rsList.append(copy.copy(rs))
 
         for t in range(1,t_max):
@@ -146,7 +160,14 @@ class SchedStrat:
         return rsList
 
     def reachSetHoldKill(self,initSet,seqn):
-        rs=copy.copy(initSet)
+        rsList=[]
+        for initPoint in initSet:
+            rsListVert=self.reachSetHoldKill2(initPoint,seqn)
+            rsList.append(rsListVert)
+        return rsList
+
+    def reachSetHoldKill2(self,initPoint,seqn):
+        rs=copy.copy(initPoint)
         p=self.A.shape[0]
         r=self.B.shape[1]
 
@@ -169,7 +190,7 @@ class SchedStrat:
 
         rsList=[]
 
-        rsList.append(copy.copy(initSet))
+        rsList.append(copy.copy(initPoint))
 
         for t in range(1,t_max+1):
             if seqn[t-1]==1:
@@ -187,7 +208,14 @@ class SchedStrat:
         return rsList
 
     def reachSetZeroKill(self,initSet,seqn):
-        rs=copy.copy(initSet)
+        rsList=[]
+        for initPoint in initSet:
+            rsListVert=self.reachSetZeroKill2(initPoint,seqn)
+            rsList.append(rsListVert)
+        return rsList
+
+    def reachSetZeroKill2(self,initPoint,seqn):
+        rs=copy.copy(initPoint)
         p=self.A.shape[0]
         r=self.B.shape[1]
 
@@ -207,7 +235,7 @@ class SchedStrat:
 
         rsList=[]
 
-        rsList.append(copy.copy(initSet))
+        rsList.append(copy.copy(initPoint))
 
         for t in range(1,t_max+1):
             if seqn[t-1]==1:

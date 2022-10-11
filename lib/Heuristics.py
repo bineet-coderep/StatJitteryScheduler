@@ -1,5 +1,5 @@
 import os,sys
-PROJECT_ROOT = os.environ['STAT_SCHDLR_ROOT_DIR']
+PROJECT_ROOT = os.environ['STAT_SCHDLR_V2_ROOT_DIR']
 sys.path.append(PROJECT_ROOT)
 
 from Parameters import *
@@ -9,11 +9,11 @@ from lib.Deviation import *
 import time
 
 class Heuristics:
-    def __init__(self,systemObj,dim,initPoint,H=150,schedPol="HoldSkip-Next",distro="K-Miss",K_miss=-1,heuName="RandSampKMiss"):
+    def __init__(self,systemObj,dim,initSet,H=150,schedPol="HoldSkip-Next",distro="K-Miss",K_miss=-1,heuName="RandSampKMiss"):
         self.systemObj=systemObj
         self.H=H
         self.dim=dim
-        self.initPoint=initPoint
+        self.initSet=initSet
         self.schedPol=schedPol
         self.distro=distro
         self.K_miss=K_miss
@@ -60,17 +60,18 @@ class Heuristics:
         randSamp=RandSampling(self.systemObj,self.H,self.schedPol,self.distro,self.K_miss)
 
 
-        (s,randTrajs)=randSamp.getSamples(self.initPoint,K)
+        (s,randTrajs)=randSamp.getSamples(self.initSet,K)
 
         #print(s)
 
 
-        nomTraj=randSamp.getAllHitTraj(self.initPoint)
+        nomTraj=randSamp.getAllHitTraj(self.initSet)
 
         #allMissTraj=randSamp.getAllMissTraj(self.initPoint)
 
 
-        (d,t)=Deviation.computeDevTrajectories(nomTraj,randTrajs,self.dim)
+        (d,t)=DeviationSet.computeDevTrajectories(nomTraj,randTrajs,self.dim)
+
 
         '''print(ctMax,d)
         print(s[ctMax],len(s[ctMax]))

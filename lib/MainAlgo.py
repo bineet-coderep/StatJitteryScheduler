@@ -1,5 +1,5 @@
 import os,sys
-PROJECT_ROOT = os.environ['STAT_SCHDLR_ROOT_DIR']
+PROJECT_ROOT = os.environ['STAT_SCHDLR_V2_ROOT_DIR']
 sys.path.append(PROJECT_ROOT)
 
 from Parameters import *
@@ -36,6 +36,9 @@ class DevCompStat:
         print("\t>> SUB-STATUS: Initial d Computed!!")
 
         print()
+
+        print("NOT YET IMPLENETED!")
+        exit()
 
         print("\t>> SUB-STATUS: Refinement Starts . . .")
         it=0

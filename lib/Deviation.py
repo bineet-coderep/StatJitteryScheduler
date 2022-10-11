@@ -1,5 +1,5 @@
 import os,sys
-PROJECT_ROOT = os.environ['STAT_SCHDLR_ROOT_DIR']
+PROJECT_ROOT = os.environ['STAT_SCHDLR_V2_ROOT_DIR']
 sys.path.append(PROJECT_ROOT)
 
 from Parameters import *
@@ -46,6 +46,69 @@ class Deviation:
         ct=0
         for traj in trajs:
             (d_i,t_i)=Deviation.computeDev(nomTraj,traj,dim)
+            if d_i>d:
+                #print(traj,ct,"\n\n")
+                d=d_i
+                tStep=t_i
+                ctMax=ct
+            ct=ct+1
+        #print(ct)
+
+        return (d,tStep)
+
+class DeviationSet:
+
+    def computeDev(traj1,traj2,dim=2):
+        '''
+        Compute the maximum distance between traj1 and traj2
+        '''
+
+        H=len(traj1[0])
+        nVert=len(traj1)
+
+        #dim=traj1[0].shape[0]
+
+        dMx=-np.inf
+        mxT=-7
+        for t in range(H):
+            dt=-np.inf
+            for v in range(nVert):
+                #traj1[v][t]
+                dv=-np.inf
+                for v2 in range(nVert):
+                    #traj2[v2][t]
+                    dd=0
+                    for d in range(dim):
+                        p=traj1[v][t][d]
+                        q=traj2[v2][t][d]
+                        dd=dd+((p-q)**2)
+                    d_12_v_v2=math.sqrt(dd)
+                    if d_12_v_v2>dv:
+                        dv=d_12_v_v2
+                if dv>dt:
+                    dt=dv
+            #print(dt)
+            if dt>dMx:
+                #print(d,dt)
+                dMx=dt
+                #print(d,dt)
+                #print("--")
+                mxT=t
+
+        return (dMx,mxT)
+
+    def computeDevTrajectories(nomTraj,trajs,dim=2):
+        '''
+        Compute the maximum distance between the set of trajectories trajs
+        and nomTraj
+        '''
+
+        d=-np.inf
+        tStep=-7
+        ctMax=-7
+        ct=0
+        for traj in trajs:
+            (d_i,t_i)=DeviationSet.computeDev(nomTraj,traj,dim)
             if d_i>d:
                 #print(traj,ct,"\n\n")
                 d=d_i

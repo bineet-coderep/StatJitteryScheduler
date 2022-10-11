@@ -1,5 +1,5 @@
 import os,sys
-PROJECT_ROOT = os.environ['STAT_SCHDLR_ROOT_DIR']
+PROJECT_ROOT = os.environ['STAT_SCHDLR_V2_ROOT_DIR']
 sys.path.append(PROJECT_ROOT)
 
 from Parameters import *
@@ -13,6 +13,80 @@ import seaborn as sns
 class Viz2:
 
     def vizTrajs(allHitTraj,randTrajs,d_ub,th1=0,th2=1,fname="benchmark"):
+        plt.figure()
+        ax = plt.axes(projection='3d')
+        #fig = plt.subplots()
+
+
+        ax.set_xlabel(r'$\mathbf{x_0}$',fontsize=12)
+        ax.set_ylabel(r'$\mathbf{x_1}$',fontsize=12)
+        ax.set_zlabel('time',fontsize=11,fontweight='bold')
+
+        ax.set_xlim(-25, 25)
+        ax.set_ylim(-30, 30)
+        #ax.set_zlim(0, 160)
+
+        nVert=len(allHitTraj)
+        H=len(allHitTraj[0])
+
+        Zlist=list(range(H))
+
+        for randTraj in randTrajs:
+            '''for t in range(H):
+                #fillX=[]
+                #fillY=[]
+                polyArray=np.zeros((nVert,2))
+                for v in range(nVert):
+                    polyArray[v][0]=randTraj[v][t][th1]
+                    polyArray[v][1]=randTraj[v][t][th2]
+                #polyArray[nVert][0]=allHitTraj[0][t][th1]
+                #polyArray[nVert][1]=allHitTraj[0][t][th2]
+                #polyArray=np.random.rand(nVert ,2)
+                #print(polyArray)
+                pPoly=plt.Polygon(polyArray,fc='k', ec='k', closed=True,fill=True)
+                ax.add_patch(pPoly)
+                art3d.pathpatch_2d_to_3d(pPoly, z=t, zdir="z")'''
+
+
+            for v in range(nVert):
+                Xlist=[]
+                Ylist=[]
+                for t in range(H):
+                    Xlist.append(randTraj[v][t][th1])
+                    Ylist.append(randTraj[v][t][th2])
+                ax.plot3D(Xlist,Ylist,Zlist, color='k',markersize=1,linewidth=1,linestyle='--')
+
+        '''for t in range(H):
+            #fillX=[]
+            #fillY=[]
+            polyArray=np.zeros((nVert,2))
+            for v in range(nVert):
+                polyArray[v][0]=allHitTraj[v][t][th1]
+                polyArray[v][1]=allHitTraj[v][t][th2]
+            #poly2Array[nVert][0]=allHitTraj[0][t][th1]
+            #polyArray[nVert][1]=allHitTraj[0][t][th2]
+            #polyArray=np.random.rand(nVert ,2)
+            #print(polyArray)
+            pPoly=plt.Polygon(polyArray,fc='g', ec='g', closed=True,fill=True)
+            ax.add_patch(pPoly)
+            art3d.pathpatch_2d_to_3d(pPoly, z=t, zdir="z")'''
+
+
+
+        for v in range(nVert):
+            Xlist=[]
+            Ylist=[]
+            for t in range(H):
+                Xlist.append(allHitTraj[v][t][th1])
+                Ylist.append(allHitTraj[v][t][th2])
+            ax.plot3D(Xlist,Ylist,Zlist, color='g',markersize=1,linewidth=1,linestyle='-')
+
+
+
+        #plt.show()
+        plt.savefig(OUTPUT_PATH+'/'+fname+"_safety_envelope"+'.pdf', format='pdf',bbox_inches='tight',pad_inches = 0,transparent = True)
+
+    def vizTrajsOld(allHitTraj,randTrajs,d_ub,th1=0,th2=1,fname="benchmark"):
         plt.figure()
         ax = plt.axes(projection='3d')
         #fig = plt.subplots()

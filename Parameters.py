@@ -8,7 +8,7 @@ Please add the following line in ~/.bashrc
 export STAT_SCHDLR_ROOT_DIR = <YOUR PROJECT ROOT>
 '''
 
-PROJECT_ROOT = os.environ['STAT_SCHDLR_ROOT_DIR']
+PROJECT_ROOT = os.environ['STAT_SCHDLR_V2_ROOT_DIR']
 sys.path.append(PROJECT_ROOT)
 
 LIB_PATH=PROJECT_ROOT+'/'+'lib/'
