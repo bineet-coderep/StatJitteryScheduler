@@ -37,8 +37,6 @@ class DevCompStat:
 
         print()
 
-        print("NOT YET IMPLENETED!")
-        exit()
 
         print("\t>> SUB-STATUS: Refinement Starts . . .")
         it=0

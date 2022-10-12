@@ -1,0 +1,32 @@
+>> F1Tenth  Report
+>>	 Scheduling Policy:  HoldSkip-Next ;	 Misses:  3
+		* Avg. Time Taken:  36.19192561626434
+		* Avg. Refinements Made:  1.52
+		* Avg. Upper Bound d:  18.038984434107356
+		* SD. Upper Bound d:  0.9677432941814587
+
+
+
+
+>> F1Tenth Network Report
+>>	 Scheduling Policy:  HoldSkip-Next ;	 Misses:  2
+		* Avg. Time Taken:  37.79589531898498
+		* Avg. Refinements Made:  1.66
+		* Avg. Upper Bound d:  12.02324480642805
+		* SD. Upper Bound d:  0.406440726599731
+>>	 Scheduling Policy:  HoldSkip-Next ;	 Misses:  4
+		* Avg. Time Taken:  36.24136210441589
+		* Avg. Refinements Made:  1.6
+		* Avg. Upper Bound d:  25.22550440213131
+		* SD. Upper Bound d:  2.2154951780368837
+>>	 Scheduling Policy:  HoldSkip-Next ;	 Misses:  8
+		* Avg. Time Taken:  34.08997415542603
+		* Avg. Refinements Made:  1.46
+		* Avg. Upper Bound d:  58.64651921441017
+		* SD. Upper Bound d:  13.128852013431695
+>>	 Scheduling Policy:  HoldSkip-Next ;	 Misses:  16
+		* Avg. Time Taken:  37.761888499259946
+		* Avg. Refinements Made:  1.7
+		* Avg. Upper Bound d:  87.2492975060889
+		* SD. Upper Bound d:  42.34130449802937
+

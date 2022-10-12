@@ -12,11 +12,11 @@ import time
 
 class StatVerJFB:
 
-    def __init__(self,systemObj,dim,initPoint,H=150,schedPol="HoldSkip-Next",distro="K-Miss",K_miss=-1,B=1000,c=0.99):
+    def __init__(self,systemObj,dim,initSet,H=150,schedPol="HoldSkip-Next",distro="K-Miss",K_miss=-1,B=1000,c=0.99):
         self.systemObj=systemObj
         self.H=H
         self.dim=dim
-        self.initPoint=initPoint
+        self.initSet=initSet
         self.schedPol=schedPol
         self.distro=distro
         self.K_miss=K_miss
@@ -33,11 +33,11 @@ class StatVerJFB:
         time_taken=time.time()
         # Generate random samples according to JFB
         #print(self.JFB_params.K)
-        (s,randSamples)=self.randSampObj.getSamples(self.initPoint,self.JFB_params.K)
-        nomTraj=self.randSampObj.getAllHitTraj(self.initPoint)
+        (s,randSamples)=self.randSampObj.getSamples(self.initSet,self.JFB_params.K)
+        nomTraj=self.randSampObj.getAllHitTraj(self.initSet)
         # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         # Compute deviation from the samples
-        (dSamp,t)=Deviation.computeDevTrajectories(nomTraj,randSamples)
+        (dSamp,t)=DeviationSet.computeDevTrajectories(nomTraj,randSamples)
         if dSamp>d_ub:
             print("\t* Hypothesis Accepted: ",False)
             print("\t* Time Taken: ",time.time()-time_taken)

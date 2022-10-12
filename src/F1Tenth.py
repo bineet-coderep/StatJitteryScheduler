@@ -1,5 +1,5 @@
 import os,sys
-PROJECT_ROOT = os.environ['STAT_SCHDLR_ROOT_DIR']
+PROJECT_ROOT = os.environ['STAT_SCHDLR_V2_ROOT_DIR']
 sys.path.append(PROJECT_ROOT)
 
 import statistics as stat
@@ -15,7 +15,7 @@ import pandas as pd
 
 class F1Tenth:
 
-    def getD(initPoint=[10,10],H=150,schedPol="HoldSkip-Next",distro="K-Miss",K_miss=3,heuName="RandSampKMiss",B=415000,c=0.99):
+    def getD(initSet=[[10,10],[12,10],[12,12],[10,12]],H=150,schedPol="HoldSkip-Next",distro="K-Miss",K_miss=3,heuName="RandSampKMiss",B=415000,c=0.99):
         dynA=Benchmarks.F1Tenth.A
         dynB=Benchmarks.F1Tenth.B
         dynC=Benchmarks.F1Tenth.C
@@ -24,25 +24,26 @@ class F1Tenth:
         n=dynA.shape[0]
         systemObj=System(dynA,dynB,dynC,dynD,K)
 
+        initPointArrayReps=[]
 
-        if schedPol=="HoldKill":
-            initPointArrayRep=np.array(initPoint+[0]).reshape(3,-1)
-        elif schedPol=="ZeroKill":
-            initPointArrayRep=np.array(initPoint+[0]).reshape(3,-1)
-        elif schedPol=="HoldSkip-Next":
-            initPointArrayRep=np.array(initPoint+[0,0,0]).reshape(5,-1)
-        elif schedPol=="ZeroSkip-Next":
-            initPointArrayRep=np.array(initPoint+[0,0,0]).reshape(5,-1)
+        if schedPol=="HoldKill" or schedPol=="ZeroKill":
+            for initPoint in initSet:
+                initPointArrayRep=np.array(initPoint+[0]).reshape(3,-1)
+                initPointArrayReps.append(initPointArrayRep)
+        elif schedPol=="HoldSkip-Next" or schedPol=="ZeroSkip-Next":
+            for initPoint in initSet:
+                initPointArrayRep=np.array(initPoint+[0,0,0]).reshape(5,-1)
+                initPointArrayReps.append(initPointArrayRep)
         else:
             print(">> STATUS: FATAL ERROR - UNIMPLEMENETED!")
 
-        devStat=DevCompStat(systemObj,n,initPointArrayRep,H,schedPol,distro,K_miss,heuName,B,c)
+        devStat=DevCompStat(systemObj,n,initPointArrayReps,H,schedPol,distro,K_miss,heuName,B,c)
 
         d_ub,it,tot_time=devStat.mainAlgo()
 
         return d_ub,it,tot_time
 
-    def varySchedPols(initPoint=[10,10],H=150,distro="K-Miss",K_miss=3,heuName="RandSampKMiss",B=415000,c=0.99):
+    def varySchedPols(initSet=[[10,10],[12,10],[12,12],[10,12]],H=150,distro="K-Miss",K_miss=3,heuName="RandSampKMiss",B=415000,c=0.99):
 
         #schedPols=["HoldKill","ZeroKill","HoldSkip-Next","ZeroSkip-Next"]
         schedPols=["HoldSkip-Next"]
@@ -57,7 +58,7 @@ class F1Tenth:
             devs=[]
             for e in range(EPOCH):
                 #print("++++++++")
-                d_ub,it,tot_time=F1Tenth.getD(initPoint,H,schedPol,distro,K_miss,heuName,B,c)
+                d_ub,it,tot_time=F1Tenth.getD(initSet,H,schedPol,distro,K_miss,heuName,B,c)
                 runTime.append(tot_time)
                 refinements.append(it)
                 devs.append(d_ub)
@@ -73,23 +74,24 @@ class F1Tenth:
         dynD=Benchmarks.F1Tenth.D
         K=Benchmarks.F1Tenth.K
         n=dynA.shape[0]
+        initPointArrayReps=[]
         systemObj=System(dynA,dynB,dynC,dynD,K)
-        if schedPol=="HoldKill":
-            initPointArrayRep=np.array(initPoint+[0]).reshape(3,-1)
-        elif schedPol=="ZeroKill":
-            initPointArrayRep=np.array(initPoint+[0]).reshape(3,-1)
-        elif schedPol=="HoldSkip-Next":
-            initPointArrayRep=np.array(initPoint+[0,0,0]).reshape(5,-1)
-        elif schedPol=="ZeroSkip-Next":
-            initPointArrayRep=np.array(initPoint+[0,0,0]).reshape(5,-1)
+        if schedPol=="HoldKill" or schedPol=="ZeroKill":
+            for initPoint in initSet:
+                initPointArrayRep=np.array(initPoint+[0]).reshape(3,-1)
+                initPointArrayReps.append(initPointArrayRep)
+        elif schedPol=="HoldSkip-Next" or schedPol=="ZeroSkip-Next":
+            for initPoint in initSet:
+                initPointArrayRep=np.array(initPoint+[0,0,0]).reshape(5,-1)
+                initPointArrayReps.append(initPointArrayRep)
         else:
             print(">> STATUS: FATAL ERROR - UNIMPLEMENETED!")
         randSampObj=randSampObj=RandSampling(systemObj,H,schedPol,distro,K_miss)
-        nomTraj=randSampObj.getAllHitTraj(initPointArrayRep)
-        (s,randSamps)=randSampObj.getSamples(initPointArrayRep,10)
-        allMissTraj=randSampObj.getAllMissTraj(initPointArrayRep)
+        nomTraj=randSampObj.getAllHitTraj(initPointArrayReps)
+        (s,randSamps)=randSampObj.getSamples(initPointArrayReps,10)
+        allMissTraj=randSampObj.getAllMissTraj(initPointArrayReps)
 
-        print("\n\n\n>> F1Tenth Network Report")
+        print("\n\n\n>> F1Tenth  Report")
 
         for i in range(len(schedPols)):
             print(">>\t Scheduling Policy: ",schedPols[i],";\t Misses: ",K_miss)
@@ -100,14 +102,14 @@ class F1Tenth:
 
         Viz2.vizTrajs(nomTraj,randSamps,avgD[0],fname="F1Tenth_Trajs")
 
-    def varyC(initPoint=[10,10],H=150,schedPol="HoldSkip-Next",distro="K-Miss",K_miss=3,heuName="RandSampKMiss",B=415000):
+    def varyC(initSet=[[10,10],[12,10],[12,12],[10,12]],H=150,schedPol="HoldSkip-Next",distro="K-Miss",K_miss=3,heuName="RandSampKMiss",B=415000):
         listC=[]
         listD=[]
         listSDD=[]
         listItNum=[]
         STEP=20
-        c=0.999
-        stepSize=float((0.9999-c)/STEP)
+        c=0.55
+        stepSize=float((0.99-c)/STEP)
 
         cDev=[]
 
@@ -116,7 +118,7 @@ class F1Tenth:
             #refinements=[]
             #devs=[]
             for e in range(EPOCH):
-                d_ub,it,tot_time=F1Tenth.getD(initPoint,H,schedPol,distro,K_miss,heuName,B,c)
+                d_ub,it,tot_time=F1Tenth.getD(initSet,H,schedPol,distro,K_miss,heuName,B,c)
                 #runTime.append(tot_time)
                 #refinements.append(it)
                 #devs.append(d_ub)
@@ -131,7 +133,7 @@ class F1Tenth:
 
         Viz2.vizVaryC(mean_var_df,fname="F1Tenth_varC")
 
-    def varK_miss(initPoint=[10,10],H=150,schedPol="HoldSkip-Next",distro="K-Miss",heuName="RandSampKMiss",B=415000,c=0.99):
+    def varK_miss(initSet=[[10,10],[12,10],[12,12],[10,12]],H=150,schedPol="HoldSkip-Next",distro="K-Miss",heuName="RandSampKMiss",B=415000,c=0.99):
         K_miss_list=[2,4,8,16]
         #K_miss_list=[1,2,3,4]
         avgRunTime=[]
@@ -144,7 +146,7 @@ class F1Tenth:
             refinements=[]
             devs=[]
             for e in range(EPOCH):
-                d_ub,it,tot_time=F1Tenth.getD(initPoint,H,schedPol,distro,K_miss,heuName,B,c)
+                d_ub,it,tot_time=F1Tenth.getD(initSet,H,schedPol,distro,K_miss,heuName,B,c)
                 runTime.append(tot_time)
                 refinements.append(it)
                 devs.append(d_ub)
@@ -163,7 +165,7 @@ class F1Tenth:
             print("\t\t* Avg. Upper Bound d: ",avgD[i])
             print("\t\t* SD. Upper Bound d: ",sdD[i])
 
-    def varySchedPolsShowViolation(initPoint=[10,10],H=150,distro="K-Miss",K_miss=1,heuName="RandSampKMiss",B=415000,c=0.99):
+    def varySchedPolsShowViolation(initSet=[[10,10],[12,10],[12,12],[10,12]],H=150,distro="K-Miss",K_miss=1,heuName="RandSampKMiss",B=415000,c=0.99):
 
         #schedPols=["HoldKill","ZeroKill","HoldSkip-Next","ZeroSkip-Next"]
         schedPols=["HoldSkip-Next"]
@@ -179,7 +181,7 @@ class F1Tenth:
             devs=[]
             for e in range(EPOCH):
                 #print("++++++++")
-                d_ub,it,tot_time=F1Tenth.getD(initPoint,H,schedPol,distro,K_miss,heuName,B,c)
+                d_ub,it,tot_time=F1Tenth.getD(initSet,H,schedPol,distro,K_miss,heuName,B,c)
                 runTime.append(tot_time)
                 refinements.append(it)
                 devs.append(d_ub)
@@ -196,14 +198,32 @@ class F1Tenth:
         K=Benchmarks.F1Tenth.K
         n=dynA.shape[0]
         systemObj=System(dynA,dynB,dynC,dynD,K)
-        initPointArrayRep=np.array(initPoint+[0,0,0]).reshape(5,-1)
-        randSampObj=randSampObj=RandSampling(systemObj,H,schedPol,distro,K_miss)
-        nomTraj=randSampObj.getAllHitTraj(initPointArrayRep)
-        (s,randSamps)=randSampObj.getSamples(initPointArrayRep,10)
-        allMissTraj=randSampObj.getAllMissTraj(initPointArrayRep)
 
-        uTrajObj=UnsafeTraj(systemObj,initPointArrayRep,H,schedPol,distro,K_miss+1,B,c)
+        initPointArrayReps=[]
+        if schedPol=="HoldKill" or schedPol=="ZeroKill":
+            for initPoint in initSet:
+                initPointArrayRep=np.array(initPoint+[0]).reshape(3,-1)
+                initPointArrayReps.append(initPointArrayRep)
+        elif schedPol=="HoldSkip-Next" or schedPol=="ZeroSkip-Next":
+            for initPoint in initSet:
+                initPointArrayRep=np.array(initPoint+[0,0,0]).reshape(5,-1)
+                initPointArrayReps.append(initPointArrayRep)
+        else:
+            print(">> STATUS: FATAL ERROR - UNIMPLEMENETED!")
+
+
+        randSampObj=randSampObj=RandSampling(systemObj,H,schedPol,distro,K_miss)
+        nomTraj=randSampObj.getAllHitTraj(initPointArrayReps)
+        (s,randSamps)=randSampObj.getSamples(initPointArrayReps,10)
+        allMissTraj=randSampObj.getAllMissTraj(initPointArrayReps)
+
+        #print("C1")
+
+
+        uTrajObj=UnsafeTraj(systemObj,initPointArrayReps,H,schedPol,distro,K_miss+1,B,c)
         randSampsVio,vioT=uTrajObj.getVioTrajs(avgD[0]+2,1)
+
+        #print("C2")
 
 
         Viz2.vizTrajsVio(nomTraj,randSamps,randSampsVio,vioT,avgD[0],fname="F1Tenth_Trajs")
@@ -218,10 +238,11 @@ class F1Tenth:
 
 
 if True:
-    initPoint=[10,10]
+    initSet=[[10,10],[12,10],[12,12],[10,12]]
+    #initSet=[[10,10],[10,10],[10,10],[10,10]]
     H=150
-    #F1Tenth.varySchedPols(initPoint=[10,10],H=150,K_miss=3,c=0.9999) # Set Parameter R=50 before executing
-    #F1Tenth.varyC(initPoint=[10,10],H=150,K_miss=2) # Set Parameter R=10 before executing
-    #F1Tenth.varK_miss(initPoint=[10,10],H=150) # Set Parameter R=50 before executing
+    #F1Tenth.varySchedPols(initSet,H=150,K_miss=3,c=0.99) # Set Parameter R=50 before executing
+    #F1Tenth.varyC(initSet,H=150,K_miss=3) # Set Parameter R=10 before executing
+    #F1Tenth.varK_miss(initSet,H=150) # Set Parameter R=50 before executing
     #F1Tenth.getD(initPoint=[10,10],H=150,schedPol="HoldKill",c=0.9999) # Set Parameter R=50 before executing
-    F1Tenth.varySchedPolsShowViolation(initPoint=[10,10],H=150,K_miss=3) # Set Parameter R=50 before executing
+    #F1Tenth.varySchedPolsShowViolation(initSet,H=150,K_miss=3) # Set Parameter R=50 before executing

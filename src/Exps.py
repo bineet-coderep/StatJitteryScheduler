@@ -12,7 +12,7 @@ from lib.Visualization import *
 class Exp:
 
     def test0(initSet=[[10,10],[12,10],[12,12],[10,12]],H=150,schedPol="HoldSkip-Next",distro="K-Miss",K_miss=3,heuName="RandSampKMiss",B=415000,c=0.99):
-        initSet=[[10,10],[10,10],[10,10],[10,10]]
+        #initSet=[[10,10],[10,10],[10,10],[10,10]]
         dynA=Benchmarks.DC.A
         dynB=Benchmarks.DC.B
         dynC=Benchmarks.DC.C
@@ -30,8 +30,6 @@ class Exp:
 
         d_ub=devStat.mainAlgo()
 
-        exit()
-
         randSampObj=randSampObj=RandSampling(systemObj,H,schedPol,distro,K_miss)
         nomTraj=randSampObj.getAllHitTraj(initPointArrayReps)
         (s,randSamps)=randSampObj.getSamples(initPointArrayReps,10)
@@ -40,7 +38,7 @@ class Exp:
         Viz2.vizTrajs(nomTraj,randSamps,2)
         exit(0)
 
-    def test1(initPoint=[10,10],H=150,schedPol="ZeroSkip-Next",distro="K-Miss",K_miss=3,heuName="RandSampKMiss",B=1000,c=0.99):
+    def test1(initSet=[[10,10],[12,10],[12,12],[10,12]],H=150,schedPol="ZeroSkip-Next",distro="K-Miss",K_miss=3,heuName="RandSampKMiss",B=1000,c=0.99):
         dynA=Benchmarks.Steering.A
         dynB=Benchmarks.Steering.B
         dynC=Benchmarks.Steering.C
@@ -49,16 +47,19 @@ class Exp:
         n=dynA.shape[0]
         systemObj=System(dynA,dynB,dynC,dynD,K)
 
-        initPointArrayRep=np.array(initPoint+[0,0,0,0]).reshape(6,-1)
-        devStat=DevCompStat(systemObj,n,initPointArrayRep,H,schedPol,distro,K_miss,heuName,B,c)
+        initPointArrayReps=[]
+        for initPoint in initSet:
+            initPointArrayRep=np.array(initPoint+[0,0,0,0]).reshape(6,-1)
+            initPointArrayReps.append(initPointArrayRep)
+        devStat=DevCompStat(systemObj,n,initPointArrayReps,H,schedPol,distro,K_miss,heuName,B,c)
 
         d_ub=devStat.mainAlgo()
 
         randSampObj=randSampObj=RandSampling(systemObj,H,schedPol,distro,K_miss)
-        nomTraj=randSampObj.getAllHitTraj(initPointArrayRep)
-        allMissTraj=randSampObj.getAllMissTraj(initPointArrayRep)
-        (s,randSamps)=randSampObj.getSamples(initPointArrayRep,10)
-        Viz.vizTrajs(nomTraj,randSamps,d_ub)
+        nomTraj=randSampObj.getAllHitTraj(initPointArrayReps)
+        allMissTraj=randSampObj.getAllMissTraj(initPointArrayReps)
+        (s,randSamps)=randSampObj.getSamples(initPointArrayReps,10)
+        Viz2.vizTrajs(nomTraj,randSamps,d_ub)
 
     def test2(initPoint=[10,10],H=150,schedPol="HoldSkip-Next",distro="K-Miss",K_miss=10,heuName="RandSampKMiss",B=1000,c=0.99):
         dynA=Benchmarks.ECRTS21.A
@@ -83,4 +84,4 @@ class Exp:
 
 
 if True:
-    Exp.test0()
+    Exp.test1()
