@@ -21,7 +21,7 @@ class RandSampling:
         if self.rand_samp_met=="RGA":
             self.l=self.buildLengthDict()
 
-    def getARandSample(self,initSet):
+    def getARandSample(self,initSet,uncertainty,dim,u_range):
         # Generate a sequence
         random.seed(time.time())
         if self.distro=="Uniform":
@@ -34,7 +34,7 @@ class RandSampling:
         # %%%%%%%%%%%%%%%%%%%%%%%%%%
 
         # Generate trajectory as per seqn
-        schdStrat=SchedStrat(self.systemObj,self.schedPol)
+        schdStrat=SchedStrat(self.systemObj,self.schedPol,uncertainty,dim,u_range)
         traj=schdStrat.getReachSetSeqn(initSet,seqn)
         return (seqn,traj)
 
@@ -119,24 +119,22 @@ class RandSampling:
         return True
 
 
-
-
-    def getSamples(self,initSet,K):
+    def getSamples(self,initSet,K,uncertainty,dim,u_range):
         sequences=[]
         trajectories=[]
         for i in range(K):
-            seqn,traj=self.getARandSample(initSet)
+            seqn,traj=self.getARandSample(initSet,uncertainty,dim,u_range)
             sequences.append(seqn)
             trajectories.append(traj)
 
         return (sequences,trajectories)
 
-    def getAllHitTraj(self,initSet):
-        schdStrat=SchedStrat(self.systemObj,self.schedPol)
+    def getAllHitTraj(self,initSet,uncertainty=False,dim=None,u_range=None):
+        schdStrat=SchedStrat(self.systemObj,self.schedPol,uncertainty,dim,u_range)
         nomTraj=schdStrat.getReachSetSeqn(initSet,[1]*self.H)
         return nomTraj
 
-    def getAllMissTraj(self,initSet):
-        schdStrat=SchedStrat(self.systemObj,self.schedPol)
+    def getAllMissTraj(self,initSet,uncertainty=False,dim=None,u_range=None):
+        schdStrat=SchedStrat(self.systemObj,self.schedPol,uncertainty,dim,u_range)
         nomTraj=schdStrat.getReachSetSeqn(initSet,[0]*self.H)
         return nomTraj

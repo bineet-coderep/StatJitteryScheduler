@@ -88,7 +88,7 @@ class F1Tenth:
             print(">> STATUS: FATAL ERROR - UNIMPLEMENETED!")
         randSampObj=randSampObj=RandSampling(systemObj,H,schedPol,distro,K_miss)
         nomTraj=randSampObj.getAllHitTraj(initPointArrayReps)
-        (s,randSamps)=randSampObj.getSamples(initPointArrayReps,10)
+        (s,randSamps)=randSampObj.getSamples(initPointArrayReps,10,UNCERTAINTY,n,UNCERTAINTY_RANGE)
         allMissTraj=randSampObj.getAllMissTraj(initPointArrayReps)
 
         print("\n\n\n>> F1Tenth  Report")
@@ -214,13 +214,13 @@ class F1Tenth:
 
         randSampObj=randSampObj=RandSampling(systemObj,H,schedPol,distro,K_miss)
         nomTraj=randSampObj.getAllHitTraj(initPointArrayReps)
-        (s,randSamps)=randSampObj.getSamples(initPointArrayReps,10)
+        (s,randSamps)=randSampObj.getSamples(initPointArrayReps,10,UNCERTAINTY,n,UNCERTAINTY_RANGE)
         allMissTraj=randSampObj.getAllMissTraj(initPointArrayReps)
 
         #print("C1")
 
 
-        uTrajObj=UnsafeTraj(systemObj,initPointArrayReps,H,schedPol,distro,K_miss+1,B,c)
+        uTrajObj=UnsafeTraj(systemObj,initPointArrayReps,H,schedPol,distro,K_miss+1,B,c,UNCERTAINTY,n,UNCERTAINTY_RANGE)
         randSampsVio,vioT=uTrajObj.getVioTrajs(avgD[0]+2,1)
 
         #print("C2")
@@ -245,4 +245,4 @@ if True:
     #F1Tenth.varyC(initSet,H=150,K_miss=3) # Set Parameter R=10 before executing
     #F1Tenth.varK_miss(initSet,H=150) # Set Parameter R=50 before executing
     #F1Tenth.getD(initPoint=[10,10],H=150,schedPol="HoldKill",c=0.9999) # Set Parameter R=50 before executing
-    #F1Tenth.varySchedPolsShowViolation(initSet,H=150,K_miss=3) # Set Parameter R=50 before executing
+    F1Tenth.varySchedPolsShowViolation(initSet,H=150,K_miss=3) # Set Parameter R=50 before executing

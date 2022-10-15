@@ -9,7 +9,7 @@ from lib.Deviation import *
 import time
 
 class Heuristics:
-    def __init__(self,systemObj,dim,initSet,H=150,schedPol="HoldSkip-Next",distro="K-Miss",K_miss=-1,heuName="RandSampKMiss"):
+    def __init__(self,systemObj,dim,initSet,H=150,schedPol="HoldSkip-Next",distro="K-Miss",K_miss=-1,heuName="RandSampKMiss",uncertainty=UNCERTAINTY,u_range=UNCERTAINTY_RANGE):
         self.systemObj=systemObj
         self.H=H
         self.dim=dim
@@ -18,6 +18,8 @@ class Heuristics:
         self.distro=distro
         self.K_miss=K_miss
         self.heuName=heuName
+        self.uncertainty=UNCERTAINTY
+        self.u_range=UNCERTAINTY_RANGE
 
     def getD(self):
         if self.heuName=="RandSamp":
@@ -29,7 +31,7 @@ class Heuristics:
             exit(0)
 
     def getDRandSamp(self,K=R,P=EPSILON):
-        '''
+        '''initPoint
         - Generate K random samples
         - Generate all miss trajectories
         - Compute distance from these two sets and bloat by P% and return
@@ -37,19 +39,18 @@ class Heuristics:
         randSamp=RandSampling(self.systemObj,self.H,self.schedPol,self.distro,self.K_miss)
 
 
-        (s,randTrajs)=randSamp.getSamples(self.initPoint,K)
+        (s,randTrajs)=randSamp.getSamples(self.initSet,K,self.uncertainty,self.dim,self.u_range)
 
+        nomTraj=randSamp.getAllHitTraj(self.initSet,False,None,[0,0])
 
-        nomTraj=randSamp.getAllHitTraj(self.initPoint)
-
-        allMissTraj=randSamp.getAllMissTraj(self.initPoint)
+        #allMissTraj=randSamp.getAllMissTraj(self.initPoint)
 
 
         #(d,t)=Deviation.computeDevTrajectories(nomTraj,randTrajs+[allMissTraj],self.dim)
         (d,t)=Deviation.computeDevTrajectories(nomTraj,randTrajs,self.dim)
 
 
-        return d+P
+        return d+PinitPoint
 
     def getDRandSampKMiss(self,K=R,P=EPSILON):
         '''
@@ -60,12 +61,10 @@ class Heuristics:
         randSamp=RandSampling(self.systemObj,self.H,self.schedPol,self.distro,self.K_miss)
 
 
-        (s,randTrajs)=randSamp.getSamples(self.initSet,K)
-
-        #print(s)
+        (s,randTrajs)=randSamp.getSamples(self.initSet,K,self.uncertainty,self.dim,self.u_range)
 
 
-        nomTraj=randSamp.getAllHitTraj(self.initSet)
+        nomTraj=randSamp.getAllHitTraj(self.initSet,False,None,[0,0])
 
         #allMissTraj=randSamp.getAllMissTraj(self.initPoint)
 

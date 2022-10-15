@@ -7,18 +7,22 @@ import math
 import time
 import copy
 import numpy as np
+import random as rd
 
 class SchedStrat:
     '''
     Implements Bounded Tree Based method
     '''
-    def __init__(self,systemObj,methodName):
+    def __init__(self,systemObj,methodName,uncertainty=UNCERTAINTY,dim=DIM,u_range=UNCERTAINTY_RANGE):
         self.A=systemObj.A # Dynamics
         self.B=systemObj.B # Dynamics
         self.C=systemObj.C # Dynamics
         self.D=systemObj.D # Dynamics
         self.K=systemObj.K # Control
         self.methodName=methodName
+        self.uncertainty=uncertainty
+        self.u_range=u_range
+        self.dim=dim
 
     def getReachSetSeqn(self,initSet,seqn):
         '''
@@ -93,6 +97,12 @@ class SchedStrat:
                 # Miss-Hit
                 A = A_MM
             rs=np.matmul(A,rs)
+            if self.uncertainty==True:
+                # Add uncertainty to `rs`
+                rs_pert=np.zeros(rs.shape)
+                for i in range(self.dim):
+                    rs_pert[i][0]=rd.uniform(self.u_range[0],self.u_range[1])
+                rs=rs+rs_pert
             rsList.append(copy.copy(rs))
 
         return rsList
@@ -155,6 +165,12 @@ class SchedStrat:
                 # Miss-Hit
                 A = A_MM
             rs=np.matmul(A,rs)
+            if self.uncertainty==True:
+                # Add uncertainty to `rs`
+                rs_pert=np.zeros(rs.shape)
+                for i in range(self.dim):
+                    rs_pert[i][0]=rd.uniform(self.u_range[0],self.u_range[1])
+                rs=rs+rs_pert
             rsList.append(copy.copy(rs))
 
         return rsList
@@ -200,6 +216,12 @@ class SchedStrat:
                 # Miss
                 A = A_miss;
             rs=np.matmul(A,rs)
+            if self.uncertainty==True:
+                # Add uncertainty to `rs`
+                rs_pert=np.zeros(rs.shape)
+                for i in range(self.dim):
+                    rs_pert[i][0]=rd.uniform(self.u_range[0],self.u_range[1])
+                rs=rs+rs_pert
             rsList.append(copy.copy(rs))
 
         #np.set_printoptions(precision=3)
@@ -245,6 +267,12 @@ class SchedStrat:
                 # Miss
                 A = A_miss;
             rs=np.matmul(A,rs)
+            if self.uncertainty==True:
+                # Add uncertainty to `rs`
+                rs_pert=np.zeros(rs.shape)
+                for i in range(self.dim):
+                    rs_pert[i][0]=rd.uniform(self.u_range[0],self.u_range[1])
+                rs=rs+rs_pert
             rsList.append(copy.copy(rs))
 
         #np.set_printoptions(precision=3)

@@ -10,7 +10,7 @@ from lib.JFBF import *
 import time
 
 class DevCompStat:
-    def __init__(self,systemObj,dim,initPoint,H=150,schedPol="HoldSkip-Next",distro="K-Miss",K_miss=-1,heuName="RandSampKMiss",B=1000,c=0.99):
+    def __init__(self,systemObj,dim,initPoint,H=150,schedPol="HoldSkip-Next",distro="K-Miss",K_miss=-1,heuName="RandSampKMiss",B=1000,c=0.99,uncertainty=UNCERTAINTY,u_range=UNCERTAINTY_RANGE):
         self.systemObj=systemObj
         self.H=H
         self.dim=dim
@@ -19,6 +19,8 @@ class DevCompStat:
         self.distro=distro
         self.K_miss=K_miss
         self.heuName=heuName
+        self.uncertainty=uncertainty
+        self.u_range=u_range
         self.JFB_params=JFB(B,c)
 
     def mainAlgo(self,P=EPSILON):
@@ -29,8 +31,8 @@ class DevCompStat:
 
         print("\t>> SUB-STATUS: Computing Initial d")
         time_taken=time.time()
-        d_ub=Heuristics(self.systemObj,self.dim,self.initPoint,self.H,self.schedPol,self.distro,self.K_miss,self.heuName).getD()
-        statVerifier=StatVerJFB(self.systemObj,self.dim,self.initPoint,self.H,self.schedPol,self.distro,self.K_miss,self.JFB_params.B,self.JFB_params.c)
+        d_ub=Heuristics(self.systemObj,self.dim,self.initPoint,self.H,self.schedPol,self.distro,self.K_miss,self.heuName,self.uncertainty,self.u_range).getD()
+        statVerifier=StatVerJFB(self.systemObj,self.dim,self.initPoint,self.H,self.schedPol,self.distro,self.K_miss,self.JFB_params.B,self.JFB_params.c,self.uncertainty,self.u_range)
         print("\t* d: ",d_ub)
         print("\t* Time Taken: ",time.time()-time_taken)
         print("\t>> SUB-STATUS: Initial d Computed!!")

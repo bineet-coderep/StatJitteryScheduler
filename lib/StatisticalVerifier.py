@@ -12,7 +12,7 @@ import time
 
 class StatVerJFB:
 
-    def __init__(self,systemObj,dim,initSet,H=150,schedPol="HoldSkip-Next",distro="K-Miss",K_miss=-1,B=1000,c=0.99):
+    def __init__(self,systemObj,dim,initSet,H=150,schedPol="HoldSkip-Next",distro="K-Miss",K_miss=-1,B=1000,c=0.99,uncertainty=UNCERTAINTY,u_range=UNCERTAINTY_RANGE):
         self.systemObj=systemObj
         self.H=H
         self.dim=dim
@@ -22,6 +22,8 @@ class StatVerJFB:
         self.K_miss=K_miss
         self.B=B
         self.c=c
+        self.uncertainty=uncertainty
+        self.u_range=u_range
         self.JFB_params=JFB(B,c)
         self.randSampObj=RandSampling(self.systemObj,self.H,self.schedPol,self.distro,self.K_miss)
 
@@ -33,8 +35,8 @@ class StatVerJFB:
         time_taken=time.time()
         # Generate random samples according to JFB
         #print(self.JFB_params.K)
-        (s,randSamples)=self.randSampObj.getSamples(self.initSet,self.JFB_params.K)
-        nomTraj=self.randSampObj.getAllHitTraj(self.initSet)
+        (s,randSamples)=self.randSampObj.getSamples(self.initSet,self.JFB_params.K,self.uncertainty,self.dim,self.u_range)
+        nomTraj=self.randSampObj.getAllHitTraj(self.initSet,False,None,None)
         # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         # Compute deviation from the samples
         (dSamp,t)=DeviationSet.computeDevTrajectories(nomTraj,randSamples)
