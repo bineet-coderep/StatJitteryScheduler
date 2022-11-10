@@ -45,8 +45,8 @@ class F1Tenth:
 
     def varySchedPols(initSet=[[10,10],[12,10],[12,12],[10,12]],H=150,distro="K-Miss",K_miss=3,heuName="RandSampKMiss",B=415000,c=0.99):
 
-        #schedPols=["HoldKill","ZeroKill","HoldSkip-Next","ZeroSkip-Next"]
-        schedPols=["HoldSkip-Next"]
+        schedPols=["HoldKill","ZeroKill","HoldSkip-Next","ZeroSkip-Next"]
+        #schedPols=["HoldSkip-Next"]
         avgRunTime=[]
         avgItNum=[]
         avgD=[]
@@ -241,8 +241,8 @@ if True:
     initSet=[[10,10],[12,10],[12,12],[10,12]]
     #initSet=[[10,10],[10,10],[10,10],[10,10]]
     H=150
-    #F1Tenth.varySchedPols(initSet,H=150,K_miss=3,c=0.99) # Set Parameter R=50 before executing
+    F1Tenth.varySchedPols(initSet,H=150,K_miss=3,c=0.99) # Set Parameter R=50 before executing
     #F1Tenth.varyC(initSet,H=150,K_miss=3) # Set Parameter R=10 before executing
     #F1Tenth.varK_miss(initSet,H=150) # Set Parameter R=50 before executing
     #F1Tenth.getD(initPoint=[10,10],H=150,schedPol="HoldKill",c=0.9999) # Set Parameter R=50 before executing
-    F1Tenth.varySchedPolsShowViolation(initSet,H=150,K_miss=3) # Set Parameter R=50 before executing
+    #F1Tenth.varySchedPolsShowViolation(initSet,H=150,K_miss=3) # Set Parameter R=50 before executing

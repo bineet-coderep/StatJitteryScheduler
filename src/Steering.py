@@ -1,5 +1,5 @@
 import os,sys
-PROJECT_ROOT = os.environ['STAT_SCHDLR_ROOT_DIR']
+PROJECT_ROOT = os.environ['STAT_SCHDLR_V2_ROOT_DIR']
 sys.path.append(PROJECT_ROOT)
 
 import statistics as stat
@@ -15,7 +15,7 @@ import pandas as pd
 
 class Steering:
 
-    def getD(initPoint=[10,10],H=150,schedPol="HoldSkip-Next",distro="K-Miss",K_miss=3,heuName="RandSampKMiss",B=415000,c=0.99):
+    def getD(initSet=[[10,10],[12,10],[12,12],[10,12]],H=150,schedPol="HoldSkip-Next",distro="K-Miss",K_miss=3,heuName="RandSampKMiss",B=415000,c=0.99):
         dynA=Benchmarks.Steering.A
         dynB=Benchmarks.Steering.B
         dynC=Benchmarks.Steering.C
@@ -25,27 +25,30 @@ class Steering:
         systemObj=System(dynA,dynB,dynC,dynD,K)
 
 
-        if schedPol=="HoldKill":
-            initPointArrayRep=np.array(initPoint+[0,0]).reshape(4,-1)
-        elif schedPol=="ZeroKill":
-            initPointArrayRep=np.array(initPoint+[0,0]).reshape(4,-1)
-        elif schedPol=="HoldSkip-Next":
-            initPointArrayRep=np.array(initPoint+[0,0,0,0]).reshape(6,-1)
-        elif schedPol=="ZeroSkip-Next":
-            initPointArrayRep=np.array(initPoint+[0,0,0,0]).reshape(6,-1)
+        initPointArrayReps=[]
+
+        if schedPol=="HoldKill" or schedPol=="ZeroKill":
+            for initPoint in initSet:
+                initPointArrayRep=np.array(initPoint+[0,0]).reshape(4,-1)
+                initPointArrayReps.append(initPointArrayRep)
+        elif schedPol=="HoldSkip-Next" or schedPol=="ZeroSkip-Next":
+            for initPoint in initSet:
+                initPointArrayRep=np.array(initPoint+[0,0,0,0]).reshape(6,-1)
+                initPointArrayReps.append(initPointArrayRep)
         else:
             print(">> STATUS: FATAL ERROR - UNIMPLEMENETED!")
 
-        devStat=DevCompStat(systemObj,n,initPointArrayRep,H,schedPol,distro,K_miss,heuName,B,c)
+        devStat=DevCompStat(systemObj,n,initPointArrayReps,H,schedPol,distro,K_miss,heuName,B,c)
 
         d_ub,it,tot_time=devStat.mainAlgo()
 
         return d_ub,it,tot_time
 
-    def varySchedPols(initPoint=[10,10],H=150,distro="K-Miss",K_miss=3,heuName="RandSampKMiss",B=415000,c=0.99):
+
+    def varySchedPols(initSet=[[10,10],[12,10],[12,12],[10,12]],H=150,distro="K-Miss",K_miss=3,heuName="RandSampKMiss",B=415000,c=0.99):
 
         schedPols=["HoldKill","ZeroKill","HoldSkip-Next","ZeroSkip-Next"]
-        schedPols=["HoldSkip-Next"]
+        #schedPols=["HoldSkip-Next"]
         avgRunTime=[]
         avgItNum=[]
         avgD=[]
@@ -56,7 +59,7 @@ class Steering:
             refinements=[]
             devs=[]
             for e in range(EPOCH):
-                d_ub,it,tot_time=Steering.getD(initPoint,H,schedPol,distro,K_miss,heuName,B,c)
+                d_ub,it,tot_time=Steering.getD(initSet,H,schedPol,distro,K_miss,heuName,B,c)
                 runTime.append(tot_time)
                 refinements.append(it)
                 devs.append(d_ub)
@@ -73,11 +76,21 @@ class Steering:
         K=Benchmarks.Steering.K
         n=dynA.shape[0]
         systemObj=System(dynA,dynB,dynC,dynD,K)
-        initPointArrayRep=np.array(initPoint+[0,0,0,0]).reshape(6,-1)
+        initPointArrayReps=[]
+        if schedPol=="HoldKill" or schedPol=="ZeroKill":
+            for initPoint in initSet:
+                initPointArrayRep=np.array(initPoint+[0,0]).reshape(4,-1)
+                initPointArrayReps.append(initPointArrayRep)
+        elif schedPol=="HoldSkip-Next" or schedPol=="ZeroSkip-Next":
+            for initPoint in initSet:
+                initPointArrayRep=np.array(initPoint+[0,0,0,0]).reshape(6,-1)
+                initPointArrayReps.append(initPointArrayRep)
+        else:
+            print(">> STATUS: FATAL ERROR - UNIMPLEMENETED!")
         randSampObj=randSampObj=RandSampling(systemObj,H,schedPol,distro,K_miss)
-        nomTraj=randSampObj.getAllHitTraj(initPointArrayRep)
-        (s,randSamps)=randSampObj.getSamples(initPointArrayRep,10)
-        allMissTraj=randSampObj.getAllMissTraj(initPointArrayRep)
+        nomTraj=randSampObj.getAllHitTraj(initPointArrayReps)
+        (s,randSamps)=randSampObj.getSamples(initPointArrayReps,10,UNCERTAINTY,n,UNCERTAINTY_RANGE)
+        allMissTraj=randSampObj.getAllMissTraj(initPointArrayReps)
 
         print("\n\n\n>> Steering Network Report")
 
@@ -90,7 +103,7 @@ class Steering:
 
         Viz2.vizTrajs(nomTraj,randSamps,avgD[0],fname="steering")
 
-    def varyC(initPoint=[10,10],H=150,schedPol="HoldSkip-Next",distro="K-Miss",K_miss=3,heuName="RandSampKMiss",B=415000):
+    def varyC(initSet=[[10,10],[12,10],[12,12],[10,12]],H=150,schedPol="HoldSkip-Next",distro="K-Miss",K_miss=3,heuName="RandSampKMiss",B=415000):
         listC=[]
         listD=[]
         listSDD=[]
@@ -105,7 +118,7 @@ class Steering:
             #refinements=[]
             #devs=[]
             for e in range(EPOCH):
-                d_ub,it,tot_time=Steering.getD(initPoint,H,schedPol,distro,K_miss,heuName,B,c)
+                d_ub,it,tot_time=Steering.getD(initSet,H,schedPol,distro,K_miss,heuName,B,c)
                 #runTime.append(tot_time)
                 #refinements.append(it)
                 #devs.append(d_ub)
@@ -121,7 +134,7 @@ class Steering:
 
         Viz2.vizVaryC(mean_var_df,fname="steering")
 
-    def varK_miss(initPoint=[10,10],H=150,schedPol="HoldSkip-Next",distro="K-Miss",heuName="RandSampKMiss",B=415000,c=0.99):
+    def varK_miss(initSet=[[10,10],[12,10],[12,12]],H=150,schedPol="HoldSkip-Next",distro="K-Miss",heuName="RandSampKMiss",B=415000,c=0.99):
         K_miss_list=[2,4,8,16]
         avgRunTime=[]
         avgItNum=[]
@@ -133,7 +146,7 @@ class Steering:
             refinements=[]
             devs=[]
             for e in range(EPOCH):
-                d_ub,it,tot_time=Steering.getD(initPoint,H,schedPol,distro,K_miss,heuName,B,c)
+                d_ub,it,tot_time=Steering.getD(initSet,H,schedPol,distro,K_miss,heuName,B,c)
                 runTime.append(tot_time)
                 refinements.append(it)
                 devs.append(d_ub)
@@ -152,7 +165,7 @@ class Steering:
             print("\t\t* Avg. Upper Bound d: ",avgD[i])
             print("\t\t* SD. Upper Bound d: ",sdD[i])
 
-    def varySchedPolsShowViolation(initPoint=[10,10],H=150,distro="K-Miss",K_miss=3,heuName="RandSampKMiss",B=415000,c=0.99):
+    def varySchedPolsShowViolation(initSet=[[10,10],[12,10],[12,12],[10,12]],H=150,distro="K-Miss",K_miss=3,heuName="RandSampKMiss",B=415000,c=0.99):
 
         schedPols=["HoldKill","ZeroKill","HoldSkip-Next","ZeroSkip-Next"]
         schedPols=["HoldSkip-Next"]
@@ -166,7 +179,7 @@ class Steering:
             refinements=[]
             devs=[]
             for e in range(EPOCH):
-                d_ub,it,tot_time=Steering.getD(initPoint,H,schedPol,distro,K_miss,heuName,B,c)
+                d_ub,it,tot_time=Steering.getD(initSet,H,schedPol,distro,K_miss,heuName,B,c)
                 runTime.append(tot_time)
                 refinements.append(it)
                 devs.append(d_ub)
@@ -183,14 +196,25 @@ class Steering:
         K=Benchmarks.Steering.K
         n=dynA.shape[0]
         systemObj=System(dynA,dynB,dynC,dynD,K)
-        initPointArrayRep=np.array(initPoint+[0,0,0,0]).reshape(6,-1)
+        initPointArrayReps=[]
+        if schedPol=="HoldKill" or schedPol=="ZeroKill":
+            for initPoint in initSet:
+                initPointArrayRep=np.array(initPoint+[0,0]).reshape(4,-1)
+                initPointArrayReps.append(initPointArrayRep)
+        elif schedPol=="HoldSkip-Next" or schedPol=="ZeroSkip-Next":
+            for initPoint in initSet:
+                initPointArrayRep=np.array(initPoint+[0,0,0,0]).reshape(6,-1)
+                initPointArrayReps.append(initPointArrayRep)
+        else:
+            print(">> STATUS: FATAL ERROR - UNIMPLEMENETED!")
         randSampObj=randSampObj=RandSampling(systemObj,H,schedPol,distro,K_miss)
-        nomTraj=randSampObj.getAllHitTraj(initPointArrayRep)
-        (s,randSamps)=randSampObj.getSamples(initPointArrayRep,10)
-        allMissTraj=randSampObj.getAllMissTraj(initPointArrayRep)
+        nomTraj=randSampObj.getAllHitTraj(initPointArrayReps)
+        (s,randSamps)=randSampObj.getSamples(initPointArrayReps,10,UNCERTAINTY,n,UNCERTAINTY_RANGE)
+        allMissTraj=randSampObj.getAllMissTraj(initPointArrayReps)
 
-        uTrajObj=UnsafeTraj(systemObj,initPointArrayRep,H,schedPol,distro,K_miss+1,B,c)
-        randSampsVio,vioT=uTrajObj.getVioTrajs(avgD[0],1)
+        print(">> STATUS: Finding Unsafe Trajectory!")
+        uTrajObj=UnsafeTraj(systemObj,initPointArrayReps,H,schedPol,distro,K_miss+1,B,c)
+        randSampsVio,vioT=uTrajObj.getVioTrajs(avgD[0]+0.5,1)
 
 
         Viz2.vizTrajsVio(nomTraj,randSamps,randSampsVio,vioT,avgD[0],fname="steering_trajs")
@@ -201,12 +225,10 @@ class Steering:
 
 
 
-
-
 if True:
-    initPoint=[10,10]
+    initSet=[[10,10],[12,10],[12,12],[10,12]]
     H=150
-    #Steering.varySchedPols(initPoint=[10,10],H=150) # Set Parameter R=50 before executing
-    #Steering.varyC(initPoint=[10,10],H=150) # Set Parameter R=10 before executing
-    #Steering.varK_miss(initPoint=[10,10],H=150) # Set Parameter R=50 before executing
-    Steering.varySchedPolsShowViolation(initPoint=[10,10],H=150) # Set Parameter R=50 before executing
+    #Steering.varySchedPols(initSet,H=150) # Set Parameter R=50 before executing
+    #Steering.varyC(initSet,H=150) # Set Parameter R=10 before executing
+    #Steering.varK_miss(initSet,H=150) # Set Parameter R=50 before executing
+    Steering.varySchedPolsShowViolation(initSet,H=150) # Set Parameter R=50 before executing

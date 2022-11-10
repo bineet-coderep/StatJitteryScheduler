@@ -1,9 +1,25 @@
 >> F1Tenth  Report
+>>	 Scheduling Policy:  HoldKill ;	 Misses:  3
+		* Avg. Time Taken:  27.976877274513246
+		* Avg. Refinements Made:  0.02
+		* Avg. Upper Bound d:  11.610028924876508
+		* SD. Upper Bound d:  0.0
+>>	 Scheduling Policy:  ZeroKill ;	 Misses:  3
+		* Avg. Time Taken:  40.41989435195923
+		* Avg. Refinements Made:  1.88
+		* Avg. Upper Bound d:  20.039836216345297
+		* SD. Upper Bound d:  0.6655859689920672
 >>	 Scheduling Policy:  HoldSkip-Next ;	 Misses:  3
-		* Avg. Time Taken:  36.19192561626434
+		* Avg. Time Taken:  37.2225123167038
+		* Avg. Refinements Made:  1.58
+		* Avg. Upper Bound d:  18.039659418582804
+		* SD. Upper Bound d:  1.0006223548220203
+>>	 Scheduling Policy:  ZeroSkip-Next ;	 Misses:  3
+		* Avg. Time Taken:  35.954602665901184
 		* Avg. Refinements Made:  1.52
-		* Avg. Upper Bound d:  18.038984434107356
-		* SD. Upper Bound d:  0.9677432941814587
+		* Avg. Upper Bound d:  17.28188598442314
+		* SD. Upper Bound d:  0.7354614401280075
+
 
 
 
