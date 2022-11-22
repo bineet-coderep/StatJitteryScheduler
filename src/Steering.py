@@ -169,11 +169,13 @@ class Steering:
 
         schedPols=["HoldKill","ZeroKill","HoldSkip-Next","ZeroSkip-Next"]
         schedPols=["HoldSkip-Next"]
+        schedPol="HoldSkip-Next"
         avgRunTime=[]
         avgItNum=[]
         avgD=[]
         sdD=[]
 
+        '''
         for schedPol in schedPols:
             runTime=[]
             refinements=[]
@@ -187,7 +189,7 @@ class Steering:
             avgItNum.append(stat.mean(refinements))
             avgD.append(stat.mean(devs))
             sdD.append(stat.stdev(devs))
-
+        '''
 
         dynA=Benchmarks.Steering.A
         dynB=Benchmarks.Steering.B
@@ -213,13 +215,14 @@ class Steering:
         allMissTraj=randSampObj.getAllMissTraj(initPointArrayReps)
 
         print(">> STATUS: Finding Unsafe Trajectory!")
+        #uTrajObj=UnsafeTraj(systemObj,initPointArrayReps,H,schedPol,distro,K_miss+1,B,c)
         uTrajObj=UnsafeTraj(systemObj,initPointArrayReps,H,schedPol,distro,K_miss+1,B,c)
-        randSampsVio,vioT=uTrajObj.getVioTrajs(avgD[0]+0.5,1)
+        #randSampsVio,vioT=uTrajObj.getVioTrajs(avgD[0]+0.5,1)
+        randSampsVio,vioT=uTrajObj.getVioTrajs(7.364+0.5,1)
 
 
-        Viz2.vizTrajsVio(nomTraj,randSamps,randSampsVio,vioT,avgD[0],fname="steering_trajs")
-
-
+        #Viz2.vizTrajsVio(nomTraj,randSamps,randSampsVio,vioT,avgD[0],fname="steering_trajs")
+        Viz2.vizTrajsVio(nomTraj,randSamps,randSampsVio,vioT,2,fname="steering_trajs")
 
 
 
@@ -228,7 +231,8 @@ class Steering:
 if True:
     initSet=[[10,10],[12,10],[12,12],[10,12]]
     H=150
-    #Steering.varySchedPols(initSet,H=150) # Set Parameter R=50 before executing
+    #Steering.getD(schedPol="ZeroKill")
+    Steering.varySchedPols(initSet,H=150) # Set Parameter R=50 before executing
     #Steering.varyC(initSet,H=150) # Set Parameter R=10 before executing
     #Steering.varK_miss(initSet,H=150) # Set Parameter R=50 before executing
-    Steering.varySchedPolsShowViolation(initSet,H=150) # Set Parameter R=50 before executing
+    #Steering.varySchedPolsShowViolation(initSet,H=150) # Set Parameter R=50 before executing

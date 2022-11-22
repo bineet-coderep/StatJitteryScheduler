@@ -165,11 +165,13 @@ class AircraftPitch:
 
         #schedPols=["HoldKill","ZeroKill","HoldSkip-Next","ZeroSkip-Next"]
         schedPols=["HoldSkip-Next"]
+        schedPol="HoldSkip-Next"
         avgRunTime=[]
         avgItNum=[]
         avgD=[]
         sdD=[]
 
+        '''
         for schedPol in schedPols:
             runTime=[]
             refinements=[]
@@ -184,7 +186,7 @@ class AircraftPitch:
             avgItNum.append(stat.mean(refinements))
             avgD.append(stat.mean(devs))
             sdD.append(stat.stdev(devs))
-
+        '''
 
         dynA=Benchmarks.AircraftPitch.A
         dynB=Benchmarks.AircraftPitch.B
@@ -209,10 +211,12 @@ class AircraftPitch:
         allMissTraj=randSampObj.getAllMissTraj(initPointArrayRep)
 
         uTrajObj=UnsafeTraj(systemObj,initPointArrayRep,H,schedPol,distro,K_miss+1,B,c)
-        randSampsVio=uTrajObj.getVioTrajs(avgD[0]-70,1)
+        #randSampsVio=uTrajObj.getVioTrajs(avgD[0]+1,1)
+        randSampsVio=uTrajObj.getVioTrajs(9.732+1,1)
 
 
-        Viz2.vizTrajsVio(nomTraj,randSamps,randSampsVio,avgD[0],fname="AircraftPitch_Trajs")
+        #Viz2.vizTrajsVio(nomTraj,randSamps,randSampsVio,avgD[0],fname="AircraftPitch_Trajs")
+        Viz2.vizTrajsVio(nomTraj,randSamps,randSampsVio,9.732,fname="AircraftPitch_Trajs")
 
 
 

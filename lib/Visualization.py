@@ -31,6 +31,8 @@ class Viz2:
 
         Zlist=list(range(H))
 
+        fg=True
+
         for randTraj in randTrajs:
             for t in range(H):
                 #fillX=[]
@@ -43,6 +45,7 @@ class Viz2:
                 #polyArray[nVert][1]=allHitTraj[0][t][th2]
                 #polyArray=np.random.rand(nVert ,2)
                 #print(polyArray)
+
                 pPoly=plt.Polygon(polyArray,fc='g', closed=True,fill=True,alpha=0.3)
                 ax.add_patch(pPoly)
                 art3d.pathpatch_2d_to_3d(pPoly, z=t, zdir="z")
@@ -66,10 +69,17 @@ class Viz2:
             #poly2Array[nVert][0]=allHitTraj[0][t][th1]
             #polyArray[nVert][1]=allHitTraj[0][t][th2]
             #polyArray=np.random.rand(nVert ,2)
-            #print(polyArray)
+            '''Xv=[vrt[0] for vrt in polyArray]
+            Yv=[vrt[1] for vrt in polyArray]
+            mpX=(max(Xv)+min(Xv))/2
+            mpY=(max(Yv)+min(Yv))/2
+
+            safeEnv = plt.Circle((mpX, mpY), d_ub, color='cyan',fill=False,alpha=0.3)'''
             pPoly=plt.Polygon(polyArray,fc='k',closed=True,fill=True,alpha=0.6)
             ax.add_patch(pPoly)
+            #ax.add_patch(safeEnv)
             art3d.pathpatch_2d_to_3d(pPoly, z=t, zdir="z")
+            #art3d.pathpatch_2d_to_3d(safeEnv, z=t, zdir="z")
 
         for v in range(nVert):
             Xlist=[]
@@ -82,7 +92,20 @@ class Viz2:
 
 
         #plt.show()
-        plt.savefig(OUTPUT_PATH+'/'+fname+"_safety_envelope"+'.pdf', format='pdf',bbox_inches='tight',pad_inches = 0,transparent = True)
+        #safeEnvL = plt.Circle((0, 0), 0, color='cyan',fill=False,alpha=1,label="Safety Envelope")
+        pPolyL=plt.Polygon(polyArray,fc='k',closed=True,fill=True,alpha=1,label="Nominal Trajectory")
+        pPoly2L=plt.Polygon(polyArray,fc='g',closed=True,fill=True,alpha=1,label="Random Trajectories")
+        ax.add_patch(pPolyL)
+        ax.add_patch(pPoly2L)
+        #ax.add_patch(safeEnvL)
+        art3d.pathpatch_2d_to_3d(pPolyL, z=t, zdir="z")
+        art3d.pathpatch_2d_to_3d(pPoly2L, z=t, zdir="z")
+        #art3d.pathpatch_2d_to_3d(safeEnvL, z=t, zdir="z")
+
+        plt.legend()
+
+        #plt.savefig(OUTPUT_PATH+'/'+fname+"_safety_envelope"+'.pdf', format='pdf',bbox_inches='tight',pad_inches = 0,transparent = True)
+        plt.savefig(OUTPUT_PATH+'/'+fname+"_safety_envelope"+'.pdf',pad_inches = 0,transparent = True)
 
 
     def vizTrajs2D(allHitTraj,randTrajs,d_ub,th1=0,th2=1,fname="benchmark"):
@@ -119,6 +142,9 @@ class Viz2:
         plt.figure()
         ax = plt.axes(projection='3d')
         #fig = plt.subplots()
+        ax.set_xlabel(r'$\mathbf{x_0}$',fontsize=12)
+        ax.set_ylabel(r'$\mathbf{x_1}$',fontsize=12)
+        ax.set_zlabel('time',fontsize=11,fontweight='bold')
 
         nVert=len(allHitTraj)
         H=len(allHitTraj[0])
@@ -161,9 +187,16 @@ class Viz2:
             #polyArray[nVert][1]=allHitTraj[0][t][th2]
             #polyArray=np.random.rand(nVert ,2)
             #print(polyArray)
+            '''Xv=[vrt[0] for vrt in polyArray]
+            Yv=[vrt[1] for vrt in polyArray]
+            mpX=(max(Xv)+min(Xv))/2
+            mpY=(max(Yv)+min(Yv))/2
+            safeEnv = plt.Circle((mpX, pY), d_ub, color='cyan',fill=False,alpha=0.3)'''
             pPoly=plt.Polygon(polyArray,fc='k',closed=True,fill=True,alpha=0.6)
             ax.add_patch(pPoly)
+            #ax.add_patch(safeEnv)
             art3d.pathpatch_2d_to_3d(pPoly, z=t, zdir="z")
+            #art3d.pathpatch_2d_to_3d(safeEnv, z=t, zdir="z")
 
         for v in range(nVert):
             Xlist=[]
@@ -199,7 +232,21 @@ class Viz2:
                     Xlist.append(randTraj[v][t][th1])
                     Ylist.append(randTraj[v][t][th2])
                 ax.plot3D(Xlist,Ylist,Zlist, color='r',markersize=1,linewidth=0.5,linestyle='--',alpha=0.6)
-        #plt.legend(loc='upper right')
+
+
+        #safeEnvL = plt.Circle((0, 0), 0, color='cyan',fill=False,alpha=1,label="Safety Envelope")
+        pPolyL=plt.Polygon(polyArray,fc='k',closed=True,fill=True,alpha=1,label="Nominal Trajectory")
+        pPoly2L=plt.Polygon(polyArray,fc='g',closed=True,fill=True,alpha=1,label="Random Trajectories")
+        pPoly3L=plt.Polygon(polyArray,fc='r',closed=True,fill=True,alpha=1,label="Violating Trajectory")
+        ax.add_patch(pPolyL)
+        ax.add_patch(pPoly2L)
+        ax.add_patch(pPoly3L)
+        #ax.add_patch(safeEnvL)
+        art3d.pathpatch_2d_to_3d(pPolyL, z=t, zdir="z")
+        art3d.pathpatch_2d_to_3d(pPoly2L, z=t, zdir="z")
+        art3d.pathpatch_2d_to_3d(pPoly3L, z=t, zdir="z")
+        #art3d.pathpatch_2d_to_3d(safeEnvL, z=t, zdir="z")
+        plt.legend()
         #plt.show()
         plt.savefig(OUTPUT_PATH+'/'+fname+"_safety_envelope_vio"+'.pdf', format='pdf')
 

@@ -165,11 +165,13 @@ class ECRTS21:
 
         schedPols=["HoldKill","ZeroKill","HoldSkip-Next","ZeroSkip-Next"]
         schedPols=["HoldSkip-Next"]
+        schedPol="HoldSkip-Next"
         avgRunTime=[]
         avgItNum=[]
         avgD=[]
         sdD=[]
 
+        '''
         for schedPol in schedPols:
             runTime=[]
             refinements=[]
@@ -183,7 +185,7 @@ class ECRTS21:
             avgItNum.append(stat.mean(refinements))
             avgD.append(stat.mean(devs))
             sdD.append(stat.stdev(devs))
-
+        '''
 
         dynA=Benchmarks.ECRTS21.A
         dynB=Benchmarks.ECRTS21.B
@@ -207,10 +209,12 @@ class ECRTS21:
         allMissTraj=randSampObj.getAllMissTraj(initPointArrayReps)
 
         uTrajObj=UnsafeTraj(systemObj,initPointArrayReps,H,schedPol,distro,K_miss+1,B,c)
-        randSampsVio,vioT=uTrajObj.getVioTrajs(avgD[0]+2,1)
+        #randSampsVio,vioT=uTrajObj.getVioTrajs(avgD[0]+2,1)
+        randSampsVio,vioT=uTrajObj.getVioTrajs(9.732+2,1)
 
 
-        Viz2.vizTrajsVio(nomTraj,randSamps,randSampsVio,vioT,avgD[0],fname="uso_trajs")
+        #Viz2.vizTrajsVio(nomTraj,randSamps,randSampsVio,vioT,avgD[0],fname="uso_trajs")
+        Viz2.vizTrajsVio(nomTraj,randSamps,randSampsVio,vioT,9.732,fname="uso_trajs")
 
 
 

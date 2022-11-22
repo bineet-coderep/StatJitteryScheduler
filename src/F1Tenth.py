@@ -169,12 +169,13 @@ class F1Tenth:
 
         #schedPols=["HoldKill","ZeroKill","HoldSkip-Next","ZeroSkip-Next"]
         schedPols=["HoldSkip-Next"]
+        schedPol="HoldSkip-Next"
         avgRunTime=[]
         avgItNum=[]
         avgD=[]
         sdD=[]
 
-
+        '''
         for schedPol in schedPols:
             runTime=[]
             refinements=[]
@@ -189,7 +190,7 @@ class F1Tenth:
             avgItNum.append(stat.mean(refinements))
             avgD.append(stat.mean(devs))
             sdD.append(stat.stdev(devs))
-
+        '''
 
         dynA=Benchmarks.F1Tenth.A
         dynB=Benchmarks.F1Tenth.B
@@ -221,12 +222,14 @@ class F1Tenth:
 
 
         uTrajObj=UnsafeTraj(systemObj,initPointArrayReps,H,schedPol,distro,K_miss+1,B,c,UNCERTAINTY,n,UNCERTAINTY_RANGE)
-        randSampsVio,vioT=uTrajObj.getVioTrajs(avgD[0]+2,1)
+        #randSampsVio,vioT=uTrajObj.getVioTrajs(avgD[0]+2,1)
+        randSampsVio,vioT=uTrajObj.getVioTrajs(18.04+2,1)
 
         #print("C2")
 
 
-        Viz2.vizTrajsVio(nomTraj,randSamps,randSampsVio,vioT,avgD[0],fname="F1Tenth_Trajs")
+        #Viz2.vizTrajsVio(nomTraj,randSamps,randSampsVio,vioT,avgD[0],fname="F1Tenth_Trajs")
+        Viz2.vizTrajsVio(nomTraj,randSamps,randSampsVio,vioT,18.04,fname="F1Tenth_Trajs")
 
 
 
@@ -241,8 +244,9 @@ if True:
     initSet=[[10,10],[12,10],[12,12],[10,12]]
     #initSet=[[10,10],[10,10],[10,10],[10,10]]
     H=150
-    F1Tenth.varySchedPols(initSet,H=150,K_miss=3,c=0.99) # Set Parameter R=50 before executing
+    F1Tenth.getD(initSet,schedPol="HoldKill")
+    #F1Tenth.varySchedPols(initSet,H=150,K_miss=3,c=0.99) # Set Parameter R=50 before executing
     #F1Tenth.varyC(initSet,H=150,K_miss=3) # Set Parameter R=10 before executing
     #F1Tenth.varK_miss(initSet,H=150) # Set Parameter R=50 before executing
     #F1Tenth.getD(initPoint=[10,10],H=150,schedPol="HoldKill",c=0.9999) # Set Parameter R=50 before executing
-    #F1Tenth.varySchedPolsShowViolation(initSet,H=150,K_miss=3) # Set Parameter R=50 before executing
+    F1Tenth.varySchedPolsShowViolation(initSet,H=150,K_miss=3) # Set Parameter R=50 before executing
