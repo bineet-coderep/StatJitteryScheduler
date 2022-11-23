@@ -36,7 +36,7 @@ class RC:
         else:
             print(">> STATUS: FATAL ERROR - UNIMPLEMENETED!")
 
-        devStat=DevCompStat(systemObj,n,initPointArrayReps,H,schedPol,distro,K_miss,heuName,B,c)
+        devStat=DevCompStat(systemObj,2,initPointArrayReps,H,schedPol,distro,K_miss,heuName,B,c)
 
         d_ub,it,tot_time=devStat.mainAlgo()
 
@@ -239,9 +239,10 @@ class RC:
 
 if True:
     initSet=[[10,10],[12,10],[12,12],[10,12]]
-    H=150
-    #RC.getD(schedPol="ZeroSkip-Next")
-    RC.varySchedPols(initSet,H=150) # Set Parameter R=50 before executing
+    #initSet=[[10,10],[14,10],[14,14],[10,14]]
+    H=3
+    RC.getD(initSet,schedPol="HoldSkip-Next",H=H)
+    #RC.varySchedPols(initSet,H=150) # Set Parameter R=50 before executing
     #RC.varyC(initSet,H=150) # Set Parameter R=10 before executing
     #RC.varK_miss(initSet,H=150) # Set Parameter R=50 before executing
     #RC.varySchedPolsShowViolation(initSet,H=150) # Set Parameter R=50 before executing
