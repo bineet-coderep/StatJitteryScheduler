@@ -101,7 +101,7 @@ class Steering:
             print("\t\t* Avg. Upper Bound d: ",avgD[i])
             print("\t\t* SD. Upper Bound d: ",sdD[i])
 
-        Viz2.vizTrajs(nomTraj,randSamps,avgD[0],fname="steering")
+        #Viz2.vizTrajs(nomTraj,randSamps,avgD[0],fname="steering")
 
     def varyC(initSet=[[10,10],[12,10],[12,12],[10,12]],H=150,schedPol="HoldSkip-Next",distro="K-Miss",K_miss=3,heuName="RandSampKMiss",B=415000):
         listC=[]
@@ -214,15 +214,15 @@ class Steering:
         (s,randSamps)=randSampObj.getSamples(initPointArrayReps,10,UNCERTAINTY,n,UNCERTAINTY_RANGE)
         allMissTraj=randSampObj.getAllMissTraj(initPointArrayReps)
 
-        print(">> STATUS: Finding Unsafe Trajectory!")
+        #print(">> STATUS: Finding Unsafe Trajectory!")
         #uTrajObj=UnsafeTraj(systemObj,initPointArrayReps,H,schedPol,distro,K_miss+1,B,c)
         uTrajObj=UnsafeTraj(systemObj,initPointArrayReps,H,schedPol,distro,K_miss+1,B,c)
         #randSampsVio,vioT=uTrajObj.getVioTrajs(avgD[0]+0.5,1)
-        randSampsVio,vioT=uTrajObj.getVioTrajs(7.364+0.5,1)
+        randSampsVio,vioT=uTrajObj.getVioTrajs(4.392+0.5,1)
 
 
         #Viz2.vizTrajsVio(nomTraj,randSamps,randSampsVio,vioT,avgD[0],fname="steering_trajs")
-        Viz2.vizTrajsVio(nomTraj,randSamps,randSampsVio,vioT,2,fname="steering_trajs")
+        Viz2.vizTrajsVio(nomTraj,randSamps,randSampsVio,vioT,4.392,fname="steering_trajs")
 
 
 
@@ -232,7 +232,7 @@ if True:
     initSet=[[10,10],[12,10],[12,12],[10,12]]
     H=150
     #Steering.getD(schedPol="ZeroKill")
-    Steering.varySchedPols(initSet,H=150) # Set Parameter R=50 before executing
+    #Steering.varySchedPols(initSet,H=150) # Set Parameter R=50 before executing
     #Steering.varyC(initSet,H=150) # Set Parameter R=10 before executing
-    #Steering.varK_miss(initSet,H=150) # Set Parameter R=50 before executing
+    Steering.varK_miss(initSet,H=150) # Set Parameter R=50 before executing
     #Steering.varySchedPolsShowViolation(initSet,H=150) # Set Parameter R=50 before executing

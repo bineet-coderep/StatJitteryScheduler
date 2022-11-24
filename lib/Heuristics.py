@@ -61,15 +61,16 @@ class Heuristics:
         randSamp=RandSampling(self.systemObj,self.H,self.schedPol,self.distro,self.K_miss)
 
 
-        #(s,randTrajs)=randSamp.getSamples(self.initSet,K,self.uncertainty,self.dim,self.u_range)
+        (s,randTrajs)=randSamp.getSamples(self.initSet,K,self.uncertainty,self.dim,self.u_range)
 
 
 
-        #nomTraj=randSamp.getAllHitTraj(self.initSet,False,None,[0,0])
+        nomTraj=randSamp.getAllHitTraj(self.initSet,False,None,[0,0])
 
-        nomTraj=randSamp.getAllMissTraj(self.initSet,False,None,[0,0])
+        #nomTraj=randSamp.getAllMissTraj(self.initSet,False,None,[0,0])
 
 
+        '''
         print(len(nomTraj))
         for t in range(0,4):
             print(nomTraj[0][t])
@@ -78,6 +79,7 @@ class Heuristics:
             print(nomTraj[3][t])
             print("---")
         exit()
+        '''
 
 
 

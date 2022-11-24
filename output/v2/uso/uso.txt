@@ -1,0 +1,37 @@
+>> ECRTS21 Network Report
+>>	 Scheduling Policy:  HoldKill ;	 Misses:  1
+		* Avg. Time Taken:  26.582528524398803
+		* Avg. Refinements Made:  0
+		* Avg. Upper Bound d:  4.263773135479555
+		* SD. Upper Bound d:  0.0
+>>	 Scheduling Policy:  ZeroKill ;	 Misses:  1
+		* Avg. Time Taken:  76.84225630283356
+		* Avg. Refinements Made:  1.96
+		* Avg. Upper Bound d:  14.095736209911243
+		* SD. Upper Bound d:  0.7734785407059083
+>>	 Scheduling Policy:  HoldSkip-Next ;	 Misses:  1
+		* Avg. Time Taken:  35.01385629653931
+		* Avg. Refinements Made:  0.3
+		* Avg. Upper Bound d:  4.70074765814886
+		* SD. Upper Bound d:  0.0
+>>	 Scheduling Policy:  ZeroSkip-Next ;	 Misses:  1
+		* Avg. Time Taken:  55.12685659885406
+		* Avg. Refinements Made:  1.1
+		* Avg. Upper Bound d:  12.160584032882864
+		* SD. Upper Bound d:  0.696980885904895
+
+
+
+
+>> ECRTS21 Network Report
+>>	 Scheduling Policy:  HoldSkip-Next ;	 Misses:  2
+		* Avg. Time Taken:  53.515042662620544
+		* Avg. Refinements Made:  0.98
+		* Avg. Upper Bound d:  11.32285354251506
+		* SD. Upper Bound d:  0.0
+>>	 Scheduling Policy:  HoldSkip-Next ;	 Misses:  3
+		* Avg. Time Taken:  66.26914680957795
+		* Avg. Refinements Made:  1.46
+		* Avg. Upper Bound d:  20.692764756040592
+		* SD. Upper Bound d:  1.702530525593015
+

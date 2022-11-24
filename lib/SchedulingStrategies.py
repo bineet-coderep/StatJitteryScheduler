@@ -42,7 +42,7 @@ class SchedStrat:
 
     def reachSetHoldSkipNext(self,initSet,seqn):
         rsList=[]
-        print(seqn)
+        #print(seqn)
         for initPoint in initSet:
             rsListVert=self.reachSetHoldSkipNext2(initPoint,seqn)
             rsList.append(rsListVert)
@@ -102,8 +102,8 @@ class SchedStrat:
                 # Miss-Hit
                 A = A_MM
             rs=np.matmul(A,rs)
-            print(A)
-            '''
+            #print(A)
+
             if self.uncertainty==True:
 
                 # Add uncertainty to `rs`
@@ -111,7 +111,7 @@ class SchedStrat:
                 for i in range(self.dim):
                     rs_pert[i][0]=rd.uniform(self.u_range[0],self.u_range[1])
                 rs=rs+rs_pert
-            '''
+
             rsList.append(copy.copy(rs))
 
         return rsList

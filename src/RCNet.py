@@ -45,13 +45,13 @@ class RC:
     def varySchedPols(initSet=[[10,10],[12,10],[12,12],[10,12]],H=150,distro="K-Miss",K_miss=3,heuName="RandSampKMiss",B=415000,c=0.99):
 
         schedPols=["HoldKill","ZeroKill","HoldSkip-Next","ZeroSkip-Next"]
-        schedPol="HoldSkip-Next"
+        #schedPol="HoldSkip-Next"
         avgRunTime=[]
         avgItNum=[]
         avgD=[]
         sdD=[]
 
-        '''
+
         for schedPol in schedPols:
             runTime=[]
             refinements=[]
@@ -65,7 +65,7 @@ class RC:
             avgItNum.append(stat.mean(refinements))
             avgD.append(stat.mean(devs))
             sdD.append(stat.stdev(devs))
-        '''
+
 
         dynA=Benchmarks.DC.A
         dynB=Benchmarks.DC.B
@@ -77,7 +77,7 @@ class RC:
         initPointArrayReps=[]
         if schedPol=="HoldKill" or schedPol=="ZeroKill":
             for initPoint in initSet:
-                initPointArrayRep=np.array(initPoint+[0]).reshape(3,-1)
+                initPo5intArrayRep=np.array(initPoint+[0]).reshape(3,-1)
                 initPointArrayReps.append(initPointArrayRep)
         elif schedPol=="HoldSkip-Next" or schedPol=="ZeroSkip-Next":
             for initPoint in initSet:
@@ -90,7 +90,7 @@ class RC:
         (s,randSamps)=randSampObj.getSamples(initPointArrayReps,10,UNCERTAINTY,n,UNCERTAINTY_RANGE)
         allMissTraj=randSampObj.getAllMissTraj(initPointArrayReps)
 
-        '''
+
         print("\n\n\n>> RC Network Report")
 
         for i in range(len(schedPols)):
@@ -99,9 +99,9 @@ class RC:
             print("\t\t* Avg. Refinements Made: ",avgItNum[i])
             print("\t\t* Avg. Upper Bound d: ",avgD[i])
             print("\t\t* SD. Upper Bound d: ",sdD[i])
-        '''
 
-        Viz2.vizTrajs(nomTraj,randSamps,2.89,fname="rc_network")
+
+        #Viz2.vizTrajs(nomTraj,randSamps,2.89,fname="rc_network")
         #Viz2.vizTrajs(nomTraj,randSamps,avgD[0],fname="rc_network")
 
     def varyC(initSet=[[10,10],[12,10],[12,12],[10,12]],H=150,schedPol="HoldSkip-Next",distro="K-Miss",K_miss=3,heuName="RandSampKMiss",B=415000):
@@ -177,7 +177,7 @@ class RC:
         sdD=[]
 
 
-
+        '''
         for schedPol in schedPols:
             runTime=[]
             refinements=[]
@@ -191,7 +191,7 @@ class RC:
             avgItNum.append(stat.mean(refinements))
             avgD.append(stat.mean(devs))
             sdD.append(stat.stdev(devs))
-
+        '''
 
 
 
@@ -220,15 +220,15 @@ class RC:
 
         #print("Get Unsafe Traj")
 
-        #uTrajObj=UnsafeTraj(systemObj,initPointArrayReps,H,schedPol,distro,K_miss+10,B,c)
-        randSampsVio=uTrajObj.getVioTrajs(avgD[0]+0.001,1)
-        #randSampsVio=uTrajObj.getVioTrajs(2.89+0.001,1)
+        uTrajObj=UnsafeTraj(systemObj,initPointArrayReps,H,schedPol,distro,K_miss+1,B,c)
+        #randSampsVio=uTrajObj.getVioTrajs(avgD[0]+0.001,1)
+        randSampsVio,vioT=uTrajObj.getVioTrajs(1.418+0.2,1)
 
         #print("Got")
 
 
-        Viz2.vizTrajsVio(nomTraj,randSamps,randSampsVio,avgD[0],fname="rc_network_trajs_vio")
-        #Viz2.vizTrajsVio(nomTraj,randSamps,randSampsVio,2.89,fname="rc_network_trajs_vio")
+        #Viz2.vizTrajsVio(nomTraj,randSamps,randSampsVio,avgD[0],fname="rc_network_trajs_vio")
+        Viz2.vizTrajsVio(nomTraj,randSamps,randSampsVio,vioT,2.89,fname="rc_network_trajs_vio")
 
 
 
@@ -240,9 +240,9 @@ class RC:
 if True:
     initSet=[[10,10],[12,10],[12,12],[10,12]]
     #initSet=[[10,10],[14,10],[14,14],[10,14]]
-    H=3
-    RC.getD(initSet,schedPol="HoldSkip-Next",H=H)
+    H=150
+    #RC.getD(initSet,schedPol="HoldSkip-Next",H=H)
     #RC.varySchedPols(initSet,H=150) # Set Parameter R=50 before executing
     #RC.varyC(initSet,H=150) # Set Parameter R=10 before executing
-    #RC.varK_miss(initSet,H=150) # Set Parameter R=50 before executing
+    RC.varK_miss(initSet,H=150) # Set Parameter R=50 before executing
     #RC.varySchedPolsShowViolation(initSet,H=150) # Set Parameter R=50 before executing
