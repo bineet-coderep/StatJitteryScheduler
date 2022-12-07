@@ -42,3 +42,19 @@ class UnsafeTraj:
                     vioT.append(t)
                 if len(vioTrajs)>=nVio:
                     return (vioTrajs,vioT)
+
+    def getVioTrajsTlist(self,safeDev,nVio=5):
+        # nVio: Number of violating trajectories
+
+        while True:
+            (s,randSamples)=self.randSampObj.getSamples(self.initSet,self.JFB_params.K,self.uncertainty,self.dim,self.u_range)
+            nomTraj=self.randSampObj.getAllHitTraj(self.initSet)
+            vioTrajs=[]
+            vioT=[]
+            for traj in randSamples:
+                tlist=DeviationSet.computeDevTList(traj,nomTraj,safeDev)
+                if len(tlist)>0:
+                    vioTrajs.append(traj)
+                    vioT.append(tlist)
+                if len(vioTrajs)>=nVio:
+                    return (vioTrajs,vioT)

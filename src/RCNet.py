@@ -176,7 +176,6 @@ class RC:
         avgD=[]
         sdD=[]
 
-
         '''
         for schedPol in schedPols:
             runTime=[]
@@ -218,17 +217,20 @@ class RC:
         (s,randSamps)=randSampObj.getSamples(initPointArrayReps,10,UNCERTAINTY,n,UNCERTAINTY_RANGE)
         allMissTraj=randSampObj.getAllMissTraj(initPointArrayReps)
 
-        #print("Get Unsafe Traj")
+        print("Get Unsafe Traj")
 
         uTrajObj=UnsafeTraj(systemObj,initPointArrayReps,H,schedPol,distro,K_miss+1,B,c)
         #randSampsVio=uTrajObj.getVioTrajs(avgD[0]+0.001,1)
-        randSampsVio,vioT=uTrajObj.getVioTrajs(1.418+0.2,1)
+        randSampsVio,vioT=uTrajObj.getVioTrajsTlist(1.418+0.2,1)
 
         #print("Got")
 
+        #print(vioT[0])
+        #exit()
+
 
         #Viz2.vizTrajsVio(nomTraj,randSamps,randSampsVio,avgD[0],fname="rc_network_trajs_vio")
-        Viz2.vizTrajsVio(nomTraj,randSamps,randSampsVio,vioT,2.89,fname="rc_network_trajs_vio")
+        Viz2.vizTrajsVio(nomTraj,randSamps,randSampsVio,vioT[0],2.89,fname="rc_network_trajs_vio")
 
 
 
@@ -244,5 +246,5 @@ if True:
     #RC.getD(initSet,schedPol="HoldSkip-Next",H=H)
     #RC.varySchedPols(initSet,H=150) # Set Parameter R=50 before executing
     #RC.varyC(initSet,H=150) # Set Parameter R=10 before executing
-    RC.varK_miss(initSet,H=150) # Set Parameter R=50 before executing
-    #RC.varySchedPolsShowViolation(initSet,H=150) # Set Parameter R=50 before executing
+    #RC.varK_miss(initSet,H=150) # Set Parameter R=50 before executing
+    RC.varySchedPolsShowViolation(initSet,H=150) # Set Parameter R=50 before executing

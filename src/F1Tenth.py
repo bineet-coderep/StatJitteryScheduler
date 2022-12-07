@@ -223,13 +223,14 @@ class F1Tenth:
 
         uTrajObj=UnsafeTraj(systemObj,initPointArrayReps,H,schedPol,distro,K_miss+1,B,c,UNCERTAINTY,n,UNCERTAINTY_RANGE)
         #randSampsVio,vioT=uTrajObj.getVioTrajs(avgD[0]+2,1)
-        randSampsVio,vioT=uTrajObj.getVioTrajs(17.1+2,1)
+        randSampsVio,vioT=uTrajObj.getVioTrajsTlist(17.1+2,1)
+
 
         #print("C2")
 
 
         #Viz2.vizTrajsVio(nomTraj,randSamps,randSampsVio,vioT,avgD[0],fname="F1Tenth_Trajs")
-        Viz2.vizTrajsVio(nomTraj,randSamps,randSampsVio,vioT,17.1,fname="F1Tenth_Trajs")
+        Viz2.vizTrajsVio(nomTraj,randSamps,randSampsVio,vioT[0],17.1,fname="F1Tenth_Trajs")
 
 
 
@@ -247,6 +248,6 @@ if True:
     #F1Tenth.getD(initSet,schedPol="HoldKill")
     #F1Tenth.varySchedPols(initSet,H=150,K_miss=3,c=0.99) # Set Parameter R=50 before executing
     #F1Tenth.varyC(initSet,H=150,K_miss=3) # Set Parameter R=10 before executing
-    F1Tenth.varK_miss(initSet,H=150) # Set Parameter R=50 before executing
+    #F1Tenth.varK_miss(initSet,H=150) # Set Parameter R=50 before executing
     #F1Tenth.getD(initPoint=[10,10],H=150,schedPol="HoldKill",c=0.9999) # Set Parameter R=50 before executing
-    #F1Tenth.varySchedPolsShowViolation(initSet,H=150,K_miss=3) # Set Parameter R=50 before executing
+    F1Tenth.varySchedPolsShowViolation(initSet,H=150,K_miss=3) # Set Parameter R=50 before executing

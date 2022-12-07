@@ -210,11 +210,12 @@ class ECRTS21:
 
         uTrajObj=UnsafeTraj(systemObj,initPointArrayReps,H,schedPol,distro,K_miss+1,B,c)
         #randSampsVio,vioT=uTrajObj.getVioTrajs(avgD[0]+2,1)
-        randSampsVio,vioT=uTrajObj.getVioTrajs(4.7+2,1)
+        randSampsVio,vioT=uTrajObj.getVioTrajsTlist(4.7+2,1)
+
 
 
         #Viz2.vizTrajsVio(nomTraj,randSamps,randSampsVio,vioT,avgD[0],fname="uso_trajs")
-        Viz2.vizTrajsVio(nomTraj,randSamps,randSampsVio,vioT,4.7,fname="uso_trajs")
+        Viz2.vizTrajsVio(nomTraj,randSamps,randSampsVio,vioT[0],4.7,fname="uso_trajs")
 
 
 
@@ -229,5 +230,5 @@ if True:
     H=150
     #ECRTS21.varySchedPols(initSet,H=150) # Set Parameter R=50 before executing
     #ECRTS21.varyC(initSet,H=150) # Set Parameter R=10 before executing
-    ECRTS21.varK_miss(initSet,H=150) # Set Parameter R=50 before executing
-    #ECRTS21.varySchedPolsShowViolation(initSet,H=150) # Set Parameter R=50 before executing
+    #ECRTS21.varK_miss(initSet,H=150) # Set Parameter R=50 before executing
+    ECRTS21.varySchedPolsShowViolation(initSet,H=150) # Set Parameter R=50 before executing

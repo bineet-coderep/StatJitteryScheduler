@@ -120,6 +120,56 @@ class DeviationSet:
 
         return (dMx,mxT)
 
+    def computeDevTList(traj1,traj2,safeDev,dim=2):
+        H=len(traj1[0])
+        nVert=len(traj1)
+
+        dTlist=[]
+
+        for t in range(H):
+            dt1=-np.inf
+            for v in range(nVert):
+                #traj1[v][t]
+                dv=np.inf
+                for v2 in range(nVert):
+                    #traj2[v2][t]
+                    dd=0
+                    for d in range(dim):
+                        p=traj1[v][t][d]
+                        q=traj2[v2][t][d]
+                        dd=dd+((p-q)**2)
+                    d_12_v_v2=math.sqrt(dd)
+                    if d_12_v_v2<dv:
+                        dv=d_12_v_v2
+                if dv>dt1:
+                    dt1=dv
+            dt2=-np.inf
+            for v in range(nVert):
+                #traj1[v][t]
+                dv2=np.inf
+                for v2 in range(nVert):
+                    #traj2[v2][t]
+                    dd=0
+                    for d in range(dim):
+                        p=traj2[v][t][d]
+                        q=traj1[v2][t][d]
+                        dd=dd+((p-q)**2)
+                    d_12_v_v2=math.sqrt(dd)
+                    if d_12_v_v2<dv2:
+                        dv2=d_12_v_v2
+                if dv2>dt2:
+                    dt2=dv2
+            dt=max(dt1,dt2)
+            if dt>safeDev:
+                #print(d,dt)
+                #dMx=dt
+                #print(d,dt)
+                #print("--")
+                #mxT=t
+                dTlist.append(t)
+
+        return dTlist
+
 
     def computeDevInner(traj1,traj2,dim=2):
         '''

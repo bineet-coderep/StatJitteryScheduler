@@ -151,6 +151,44 @@ class Viz2:
 
         Zlist=list(range(H))
 
+        minVioT=min(vioT)
+        maxVioT=max(vioT)
+
+        for randTraj in randTrajsVio:
+            for t in range(H):
+                #fillX=[]
+                #fillY=[]
+                polyArray=np.zeros((nVert,2))
+                for v in range(nVert):
+                    polyArray[v][0]=randTraj[v][t][th1]
+                    polyArray[v][1]=randTraj[v][t][th2]
+                #polyArray[nVert][0]=allHitTraj[0][t][th1]
+                #polyArray[nVert][1]=allHitTraj[0][t][th2]
+                #polyArray=np.random.rand(nVert ,2)
+                #print(polyArray)
+
+                if t==minVioT or t==maxVioT:
+                    #arr=plt.arrow(polyArray[-1][0]-2.5,polyArray[-1][1]-2.5,1,1,color='#780f07',head_width=0.5)
+                    #arr=plt.arrow(polyArray[-1][0]-2,polyArray[-1][1]-2,1,1,color='#780f07',head_width=0.5)
+                    arr=plt.arrow(polyArray[2][0]-3,polyArray[2][1]-3,1.5,1.5,color='r',head_width=0.8)
+                    ax.add_patch(arr)
+                    art3d.pathpatch_2d_to_3d(arr, z=t, zdir="z")
+                    print(t)
+                    pPoly=plt.Polygon(polyArray,fc='r', closed=True,fill=True,alpha=1)
+                else:
+                    pPoly=plt.Polygon(polyArray,fc='r', closed=True,fill=True,alpha=0.6)
+                ax.add_patch(pPoly)
+                art3d.pathpatch_2d_to_3d(pPoly, z=t, zdir="z")
+
+
+            for v in range(nVert):
+                Xlist=[]
+                Ylist=[]
+                for t in range(H):
+                    Xlist.append(randTraj[v][t][th1].item())
+                    Ylist.append(randTraj[v][t][th2].item())
+                ax.plot3D(Xlist,Ylist,Zlist, color='r',markersize=1,linewidth=0.5,linestyle='--',alpha=0.6)
+
         for randTraj in randTrajs:
             for t in range(H):
                 #fillX=[]
@@ -172,8 +210,8 @@ class Viz2:
                 Xlist=[]
                 Ylist=[]
                 for t in range(H):
-                    Xlist.append(randTraj[v][t][th1])
-                    Ylist.append(randTraj[v][t][th2])
+                    Xlist.append(randTraj[v][t][th1].item())
+                    Ylist.append(randTraj[v][t][th2].item())
                 ax.plot3D(Xlist,Ylist,Zlist, color='g',markersize=1,linewidth=0.1,linestyle='--',alpha=0.3)
 
         for t in range(H):
@@ -192,7 +230,7 @@ class Viz2:
             mpX=(max(Xv)+min(Xv))/2
             mpY=(max(Yv)+min(Yv))/2
             safeEnv = plt.Circle((mpX, pY), d_ub, color='cyan',fill=False,alpha=0.3)'''
-            pPoly=plt.Polygon(polyArray,fc='k',closed=True,fill=True,alpha=0.6)
+            pPoly=plt.Polygon(polyArray,fc='k',closed=True,fill=True,alpha=0.8)
             ax.add_patch(pPoly)
             #ax.add_patch(safeEnv)
             art3d.pathpatch_2d_to_3d(pPoly, z=t, zdir="z")
@@ -202,36 +240,13 @@ class Viz2:
             Xlist=[]
             Ylist=[]
             for t in range(H):
-                Xlist.append(allHitTraj[v][t][th1])
-                Ylist.append(allHitTraj[v][t][th2])
-            ax.plot3D(Xlist,Ylist,Zlist, color='k',markersize=1,linewidth=0.1,linestyle='-',alpha=0.6)
+                Xlist.append(allHitTraj[v][t][th1].item())
+                Ylist.append(allHitTraj[v][t][th2].item())
+            ax.plot3D(Xlist,Ylist,Zlist, color='k',markersize=1,linewidth=0.1,linestyle='-',alpha=0.8)
         #plt.legend()
         #plt.show()
         #plt.savefig(OUTPUT_PATH+'/'+fname+"_safety_envelope"+'.pdf', format='pdf')
-        for randTraj in randTrajsVio:
-            for t in range(H):
-                #fillX=[]
-                #fillY=[]
-                polyArray=np.zeros((nVert,2))
-                for v in range(nVert):
-                    polyArray[v][0]=randTraj[v][t][th1]
-                    polyArray[v][1]=randTraj[v][t][th2]
-                #polyArray[nVert][0]=allHitTraj[0][t][th1]
-                #polyArray[nVert][1]=allHitTraj[0][t][th2]
-                #polyArray=np.random.rand(nVert ,2)
-                #print(polyArray)
-                pPoly=plt.Polygon(polyArray,fc='r', closed=True,fill=True,alpha=0.6)
-                ax.add_patch(pPoly)
-                art3d.pathpatch_2d_to_3d(pPoly, z=t, zdir="z")
 
-
-            for v in range(nVert):
-                Xlist=[]
-                Ylist=[]
-                for t in range(H):
-                    Xlist.append(randTraj[v][t][th1])
-                    Ylist.append(randTraj[v][t][th2])
-                ax.plot3D(Xlist,Ylist,Zlist, color='r',markersize=1,linewidth=0.5,linestyle='--',alpha=0.6)
 
 
         #safeEnvL = plt.Circle((0, 0), 0, color='cyan',fill=False,alpha=1,label="Safety Envelope")

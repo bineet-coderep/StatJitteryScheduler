@@ -218,11 +218,11 @@ class Steering:
         #uTrajObj=UnsafeTraj(systemObj,initPointArrayReps,H,schedPol,distro,K_miss+1,B,c)
         uTrajObj=UnsafeTraj(systemObj,initPointArrayReps,H,schedPol,distro,K_miss+1,B,c)
         #randSampsVio,vioT=uTrajObj.getVioTrajs(avgD[0]+0.5,1)
-        randSampsVio,vioT=uTrajObj.getVioTrajs(4.392+0.5,1)
+        randSampsVio,vioT=uTrajObj.getVioTrajsTlist(4.392+0.5,1)
 
 
         #Viz2.vizTrajsVio(nomTraj,randSamps,randSampsVio,vioT,avgD[0],fname="steering_trajs")
-        Viz2.vizTrajsVio(nomTraj,randSamps,randSampsVio,vioT,4.392,fname="steering_trajs")
+        Viz2.vizTrajsVio(nomTraj,randSamps,randSampsVio,vioT[0],4.392,fname="steering_trajs")
 
 
 
@@ -234,5 +234,5 @@ if True:
     #Steering.getD(schedPol="ZeroKill")
     #Steering.varySchedPols(initSet,H=150) # Set Parameter R=50 before executing
     #Steering.varyC(initSet,H=150) # Set Parameter R=10 before executing
-    Steering.varK_miss(initSet,H=150) # Set Parameter R=50 before executing
-    #Steering.varySchedPolsShowViolation(initSet,H=150) # Set Parameter R=50 before executing
+    #Steering.varK_miss(initSet,H=150) # Set Parameter R=50 before executing
+    Steering.varySchedPolsShowViolation(initSet,H=150) # Set Parameter R=50 before executing
